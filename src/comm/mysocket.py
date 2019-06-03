@@ -58,7 +58,7 @@ class mysocket():
         pass
     def udpRecv(self,Socket,data,datalen,timeout = 30):
         pass
-
+'''
 if __name__=="__main__":
     mysocket1 = mysocket()
     socket1 = mysocket1.sockInit(ip="100.101.89.238",port= 82)
@@ -66,3 +66,4 @@ if __name__=="__main__":
         print("分配失败")
 
     pass
+'''

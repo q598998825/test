@@ -9,7 +9,7 @@ mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"
 class mysys():
     file_list = []
     dir_list = []
-    vprogramPath = os.path.abspath(".\\mysys\\config\\vprogram.json")
+    vprogramPath = os.path.abspath("./mysys/config/vprogram.json")
     def __init__(self):
         pass
 

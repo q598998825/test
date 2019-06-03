@@ -4,7 +4,6 @@ from mymsg import *
 
 def Init():
     mysocket1 = mysocket()
-    mysocket1.test()
     pass
 
 def Proc(msg):
