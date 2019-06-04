@@ -5,4 +5,5 @@ from mysys.mysys import *
 if __name__ == '__main__':
     mysys1 = mysys()
     mysys1.InitEnv()
-    pass
+    while True:
+        time.sleep(100000)
