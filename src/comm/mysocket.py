@@ -177,18 +177,19 @@ class mysocketServerPool():
     def closesocket(self,sock):
         if sock in self.inputs:
             self.inputs.remove(sock)
-            sock.close()
         if sock in self.outputs:
             self.outputs.remove(sock)
         if sock in self.message_queues:
             del self.message_queues[sock]
-        del self.client_info[sock]
+        if(sock in self.client_info):
+            del self.client_info[sock]
         if(sock in self.pool):
             del self.pool[sock]
         if(sock in self.client_pool):
             del self.client_pool[sock]
+        sock.close()
 
     def resoponse(self,s,data):
         if s not in self.outputs:  # 要回复消息
             self.outputs.append(s)
-        self.message_queues[s].put(data)
+        self.message_queues[s].put(bytes(data,encoding = "utf8"))
