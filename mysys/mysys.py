@@ -1,5 +1,5 @@
 # coding=utf-8
-import os, sys,importlib
+import os, sys,importlib,logging
 import json
 from src.comm.mycomm import *
 from src.comm.mypthread import *
@@ -34,14 +34,13 @@ class mysys():
     def InitEnv(self):
         root_path = os.path.abspath(".")
         self.get_file_path(root_path,self.file_list,self.dir_list)
-        print(self.file_list)
+        logging.debug(self.file_list)
         self.InitEnvDir()
         self.InitEnvPy()
 
     def InitEnvDir(self):
         for dir in self.dir_list:
             sys.path.append(dir)
-            #print(dir)
 
     def InitEnvPy(self):
         #初始化必要进程
@@ -53,7 +52,7 @@ class mysys():
                 mypthread1 = mypthread(self.InitEnvProc,program)
                 mypthread1.start()
             except Exception as e:
-                print("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
 
         #初始化配置文件进程
         file = open(self.vprogramPath, 'r', encoding='utf-8')
@@ -66,7 +65,7 @@ class mysys():
                 mypthread1 = mypthread(self.InitEnvProc,program)
                 mypthread1.start()
             except Exception as e:
-                print("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
 
     def InitEnvProc(self,arg):
         program = arg
