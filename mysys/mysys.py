@@ -53,6 +53,7 @@ class mysys():
                 mypthread1.start()
             except Exception as e:
                 logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                os._exit(1)
 
         #初始化配置文件进程
         file = open(self.vprogramPath, 'r', encoding='utf-8')
@@ -61,11 +62,14 @@ class mysys():
             #导入文件
             try:
                 program = importlib.import_module(vprogram['file'])
-                program.Init()
+                if(0 > program.Init()):
+                    logging.error("导入python子系统异常[%s]" % (vprogram['name']))
+                    os._exit(1)
                 mypthread1 = mypthread(self.InitEnvProc,program)
                 mypthread1.start()
             except Exception as e:
                 logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                os._exit(1)
 
     def InitEnvProc(self,arg):
         program = arg
