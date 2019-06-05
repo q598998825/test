@@ -1,5 +1,5 @@
 # coding=utf-8
-import socket,time,select,queue
+import socket,time,select,queue,threading,logging
 from mypthread import *
 
 #基础节点
@@ -23,7 +23,7 @@ class mysocket():
 
     def send(self,Socket,data,addr,timeout = 30):
         if(Socket.type not in self.FucMap):
-            print("no type socket[%s]"%Socket.type)
+            logging.error("no type socket[%s]"%Socket.type)
             return None
         return self.FucMap[Socket.type]["send"](Socket,data,addr,timeout)
 
@@ -80,16 +80,17 @@ class mysocketServerPool():
     message_queues = {}  # 消息队列
     client_info = {}
     bufsize = 1024
+    mutex = threading.Lock()
     def __init__(self):
         self.FucMap = {"TCP":{"add":self.addTcpSocket,'del':self.delTcpSocket},
                        "UDP":{"add":self.addTcpSocket,'del':self.delTcpSocket}}
 
     def addSocket(self,socket1,Func):
         if(True != isinstance(socket1,mysock)):
-            print("socket[%s]对象实例异常"%socket)
+            logging.error("socket[%s]对象实例异常"%socket)
             return
         if(socket1.type not in self.FucMap):
-            print("服务池不适配于此类型socket[%s]"%socket1.type)
+            logging.error("服务池不适配于此类型socket[%s]"%socket1.type)
         if(Func is not None):
             socket1.func = Func
         self.FucMap[socket1.type]["add"](socket1)
@@ -131,8 +132,7 @@ class mysocketServerPool():
         for s in readable:
             if s in self.pool:#是客户端链接
                 connection, client_address = s.accept()
-                # print "connection", connection
-                print("%s connect." % str(client_address))
+                logging.debug("%s connect." % str(client_address))
                 connection.setblocking(0)  # 非阻塞
                 self.inputs.append(connection)  # 客户端添加到inputs
                 self.client_info[connection] = str(client_address)
@@ -142,36 +142,39 @@ class mysocketServerPool():
                 try:
                     data = s.recv(self.bufsize)
                 except:
-                    print("Client Error!")
+                    logging.error("Client[%s] Error!"%self.client_info[s])
                 if data:
-                    data = "%s %s say: %s" % (time.strftime("%Y-%m-%d %H:%M:%S"), self.client_info[s], data)
+                    tmpdata = "%s %s say: %s" % (time.strftime("%Y-%m-%d %H:%M:%S"), self.client_info[s], data)
+                    logging.debug(tmpdata)
                     if(self.client_pool[s].func is not None):
                         self.client_pool[s].func(self,s,data)
                 else:  # 客户端断开
-                    print("Client:%s Close." % str(self.client_info[s]))
+                    logging.debug("Client:%s Close." % str(self.client_info[s]))
                     self.closesocket(s)
 
         pass
     def dealwritable(self,writable):
+        self.mutex.acquire()
         for s in writable:  # outputs 有消息就要发出去了
             try:
                 next_msg = self.message_queues[s].get_nowait()  # 非阻塞获取
             except queue.Empty:
-                print("Output Queue is Empty!")
+                if s in self.outputs:
+                    self.outputs.remove(s)
             except Exception as e:  # 发送的时候客户端关闭了则会出现writable和readable同时有数据，会出现message_queues的keyerror
-                print("Send Data Error! ErrMsg:%s" % str(e))
+                logging.error("Send Data Error! ErrMsg:%s" % str(e))
                 self.closesocket(s)
             else:
                 try:
                     s.sendall(next_msg)
                 except Exception as e:  # 发送失败就关掉
-                    print("Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
-                    print("Client: %s Close Error." % str(self.client_info[s]))
+                    logging.error("Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
                     self.closesocket(s)
+        self.mutex.release()
 
     def dealexceptional(self,exceptional):
         for s in exceptional:
-            print("Client:%s Close Error." % str(self.client_info[s]))
+            logging.error("Client:%s Close Error." % str(self.client_info[s]))
             self.closesocket(s)
 
     def closesocket(self,sock):
@@ -190,6 +193,8 @@ class mysocketServerPool():
         sock.close()
 
     def resoponse(self,s,data):
+        self.message_queues[s].put(data)
+        self.mutex.acquire()
         if s not in self.outputs:  # 要回复消息
             self.outputs.append(s)
-        self.message_queues[s].put(bytes(data,encoding = "utf8"))
+        self.mutex.release()
