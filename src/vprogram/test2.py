@@ -1,9 +1,11 @@
 # coding=utf-8
 from mycomm import *
+import logging
 
 def Init():
-    print("test2 Init")
+    logging.debug("test2 Init")
+    return 0
 
 
 def Proc(msg):
-    print("test2 Proc")
+    logging.debug("test2 Proc")
