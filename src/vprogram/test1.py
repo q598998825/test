@@ -1,9 +1,11 @@
 # coding=utf-8
 from mycomm import *
+import logging
 def Init():
     Arr = []
     str = ""
-    print("test1 Init %s"%for_inStr(str,Arr))
+    logging.debug("test1 Init %s"%for_inStr(str,Arr))
+    return 0
 
 def Proc(msg):
-    print("test1 Proc")
+    logging.debug("test1 Proc")
