@@ -1,5 +1,9 @@
 # coding=utf-8
-def singleton(cls):
-    instance = cls()
-    instance.__call__ = lambda: instance
-    return instance
+
+def singleton(cls, *args, **kw):
+    instances = {}
+    def _singleton():
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return _singleton
