@@ -1,6 +1,7 @@
 # coding=utf-8
 from mysocket import *
 from mymsg import *
+from mymsgmng import *
 import logging, os
 
 g_MySysInInitFunc = ["myMsgInit"]
@@ -22,5 +23,5 @@ def Proc(msg):
 
 def myMsgInit():
     mymsgMng1 = mymsgMng()
-    mymsgMng1.Init("127.0.0.1",9090,123)
+    mymsgMng1.Init("127.0.0.1",9091,123)
     return 0
