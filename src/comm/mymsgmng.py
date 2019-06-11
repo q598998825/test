@@ -2,7 +2,9 @@
 from mypthread import *
 from mysocket import *
 import logging
+from mysingleton import *
 
+@singleton
 class mymsgMng():
     def Init(self,ip,port,id):
         #初始化环境用
@@ -43,7 +45,8 @@ class mymsgMng():
             mysocketServerPool1.run()
         return 0
 
-    def register(self,Func):
+    def register(self,opcode,Func):
+
         return 0
 
     def Serverfunc(self, serv, sock, data):
