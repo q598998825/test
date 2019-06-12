@@ -6,6 +6,8 @@ from mysingleton import *
 
 @singleton
 class mymsgMng():
+    func_pool = {}
+    ids_pool = {}
     def Init(self,ip,port,id):
         #初始化环境用
         if(0 > self.registerServ(ip,port,id)):
@@ -46,9 +48,13 @@ class mymsgMng():
         return 0
 
     def register(self,opcode,Func):
-
+        if opcode in self.func_pool:
+            logging.error("此opcode[%s]已注册，不能重复注册"%opcode)
+            return -1
+        self.func_pool[opcode] = Func
         return 0
 
     def Serverfunc(self, serv, sock, data):
-        logging.debug(data)
-        serv.resoponse(sock, "12345654987".encode())
+        #消息分类处理
+        pass
+
