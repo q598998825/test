@@ -47,8 +47,6 @@ class mysocket():
                 return None
             sockval.sock.connect((ip, port))
         else:
-            if(self.checkIpPort(ip, port) == False):
-                return None
             sockval.sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
             sockval.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sockval.sock.bind((ip,port))
@@ -154,7 +152,7 @@ class mysocketServerPool():
                         self.client_pool[s].func(self,s,data)
                 else:  # 客户端断开
                     logging.debug("Client:%s Close." % str(self.client_info[s]))
-                    self.closesocket(s)
+                    self.closesocket(s,1)
 
         pass
     def dealwritable(self,writable):
@@ -168,36 +166,35 @@ class mysocketServerPool():
                         self.outputs.remove(s)
                         break
                 except Exception as e:  # 发送的时候客户端关闭了则会出现writable和readable同时有数据，会出现message_queues的keyerror
-                    logging.error("Send Data Error! ErrMsg:%s" % str(e))
-                    self.closesocket(s)
+                    self.closesocket(s,-1,"Send Data Error! ErrMsg:%s" % str(e))
                     break
                 else:
                     try:
                         s.sendall(next_msg)
                     except Exception as e:  # 发送失败就关掉
-                        logging.error("Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
-                        self.closesocket(s)
+                        self.closesocket(s,-1,"Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
                         break
         self.mutex.release()
 
     def dealexceptional(self,exceptional):
         for s in exceptional:
-            logging.error("Client:%s Close Error." % str(self.client_info[s]))
-            self.closesocket(s)
+            self.closesocket(s,-2,"Client:%s Close Error." % str(self.client_info[s]))
 
     def dealneedclose(self):
         for s in self.needclose:
             if s not in self.outputs:
                 self.closesocket(s)
 
-    def closesocket(self,sock):
+    def closesocket(self,sock,errcode=0,errinfo = ""):
+        if errcode < 0:#打印错误信息
+            logging.error(errinfo)
         #如果有关闭函数则先执行关闭函数
         if(sock in self.client_pool):
             if(self.client_pool[sock].closefunc is not None):
-                self.client_pool[sock].closefunc(self,sock)
+                self.client_pool[sock].closefunc(self, sock, errcode, errinfo)
         elif(sock in self.pool):
             if(self.pool[sock].closefunc is not None):
-                self.pool[sock].closefunc(self,sock)
+                self.pool[sock].closefunc(self, sock, errcode, errinfo)
 
         #然后回收数据
         if sock in self.inputs:
