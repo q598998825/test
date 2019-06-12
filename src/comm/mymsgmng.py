@@ -6,8 +6,11 @@ from mysingleton import *
 
 @singleton
 class mymsgMng():
-    func_pool = {}
-    ids_pool = {}
+    func_pool = {} #存储okcpde用
+    ids_pool = {}   #存储服务用
+    Servip = ""     #提供给opcode的服务ip
+    Servport = 0    #提供给opcode的
+
     def Init(self,ip,port,id):
         #初始化环境用
         if(0 > self.registerServ(ip,port,id)):
@@ -16,7 +19,7 @@ class mymsgMng():
                 #生成服务失败
                 logging.error("无法连接服务也无法作为服务启动(ip[%s],port[%s],id[%s])"%(ip,port,id))
                 return -1
-
+        self.initOpcodeServer(id)
 
     def registerServ(self,ip,port,id):
         mysocket1 = mysocket()
@@ -43,9 +46,18 @@ class mymsgMng():
         else:
             logging.debug("分配服务成功")
             mysocketServerPool1 = mysocketServerPool()
-            mysocketServerPool1.addSocket(socket1, self.Serverfunc)
+            mysocketServerPool1.addSocket(socket1, self.registServerfunc,self.registCloseFunc)
             mysocketServerPool1.run()
         return 0
+
+    def initOpcodeServer(self,id):
+        mysocket1 = mysocket()
+        socket1 = mysocket1.sockInit(IsClient=False)
+        self.Servip,self.Servport = socket1.sock.getsockname()
+        logging.debug("%s,%d"%(self.Servip,self.Servport))
+        mysocketServerPool1 = mysocketServerPool()
+        mysocketServerPool1.addSocket(socket1, self.Serverfunc, self.CloseFunc)
+        mysocketServerPool1.run()
 
     def register(self,opcode,Func):
         if opcode in self.func_pool:
@@ -56,5 +68,14 @@ class mymsgMng():
 
     def Serverfunc(self, serv, sock, data):
         #消息分类处理
-        pass
+        logging.debug(data)
 
+    def CloseFunc(self,serv,sock,errcode,errinfo):
+        print("closefunc",errcode,errinfo)
+
+    def registServerfunc(self, serv, sock, data):
+        #消息分类处理
+        logging.debug(data)
+
+    def registCloseFunc(self,serv,sock,errcode,errinfo):
+        print("closefunc",errcode,errinfo)
