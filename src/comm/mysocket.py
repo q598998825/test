@@ -79,6 +79,7 @@ class mysocketServerPool():
     outputs = []  # 输出文件描述符列表
     message_queues = {}  # 消息队列
     client_info = {}
+    needclose = []
     bufsize = 1024
     mutex = threading.Lock()
     def __init__(self):
@@ -121,7 +122,7 @@ class mysocketServerPool():
             self.dealReadable(readable)
             self.dealwritable(writable)
             self.dealexceptional(exceptional)
-
+            self.dealneedclose()
 
     def run(self):
         if None is self.mypthread1:
@@ -156,26 +157,35 @@ class mysocketServerPool():
     def dealwritable(self,writable):
         self.mutex.acquire()
         for s in writable:  # outputs 有消息就要发出去了
-            try:
-                next_msg = self.message_queues[s].get_nowait()  # 非阻塞获取
-            except queue.Empty:
-                if s in self.outputs:
-                    self.outputs.remove(s)
-            except Exception as e:  # 发送的时候客户端关闭了则会出现writable和readable同时有数据，会出现message_queues的keyerror
-                logging.error("Send Data Error! ErrMsg:%s" % str(e))
-                self.closesocket(s)
-            else:
+            while True:#不断获取此socket的数据
                 try:
-                    s.sendall(next_msg)
-                except Exception as e:  # 发送失败就关掉
-                    logging.error("Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
+                    next_msg = self.message_queues[s].get_nowait()  # 非阻塞获取
+                except queue.Empty:
+                    if s in self.outputs:
+                        self.outputs.remove(s)
+                        break
+                except Exception as e:  # 发送的时候客户端关闭了则会出现writable和readable同时有数据，会出现message_queues的keyerror
+                    logging.error("Send Data Error! ErrMsg:%s" % str(e))
                     self.closesocket(s)
+                    break
+                else:
+                    try:
+                        s.sendall(next_msg)
+                    except Exception as e:  # 发送失败就关掉
+                        logging.error("Send Data to %s  Error! ErrMsg:%s" % (str(self.client_info[s]), str(e)))
+                        self.closesocket(s)
+                        break
         self.mutex.release()
 
     def dealexceptional(self,exceptional):
         for s in exceptional:
             logging.error("Client:%s Close Error." % str(self.client_info[s]))
             self.closesocket(s)
+
+    def dealneedclose(self):
+        for s in self.needclose:
+            if s not in self.outputs:
+                self.closesocket(s)
 
     def closesocket(self,sock):
         if sock in self.inputs:
@@ -190,6 +200,8 @@ class mysocketServerPool():
             del self.pool[sock]
         if(sock in self.client_pool):
             del self.client_pool[sock]
+        if(sock in self.needclose):
+            self.needclose.remove(sock)
         sock.close()
 
     def resoponse(self,s,data):
@@ -198,3 +210,6 @@ class mysocketServerPool():
         if s not in self.outputs:  # 要回复消息
             self.outputs.append(s)
         self.mutex.release()
+
+    def setneedclose(self,sock):
+        self.needclose.append(sock)
