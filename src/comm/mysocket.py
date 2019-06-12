@@ -7,6 +7,7 @@ class mysock():
     sock = None
     type = None
     func = None
+    closefunc = None
 
 #基础socket
 class mysocket():
@@ -86,7 +87,7 @@ class mysocketServerPool():
         self.FucMap = {"TCP":{"add":self.addTcpSocket,'del':self.delTcpSocket},
                        "UDP":{"add":self.addTcpSocket,'del':self.delTcpSocket}}
 
-    def addSocket(self,socket1,Func):
+    def addSocket(self,socket1,Func,CloseFunc = None):
         if(True != isinstance(socket1,mysock)):
             logging.error("socket[%s]对象实例异常"%socket)
             return
@@ -94,6 +95,8 @@ class mysocketServerPool():
             logging.error("服务池不适配于此类型socket[%s]"%socket1.type)
         if(Func is not None):
             socket1.func = Func
+        if CloseFunc is not None:
+            socket1.closefunc = CloseFunc
         self.FucMap[socket1.type]["add"](socket1)
         self.inputs.append(socket1.sock)
         self.pool[socket1.sock] = socket1
@@ -188,6 +191,15 @@ class mysocketServerPool():
                 self.closesocket(s)
 
     def closesocket(self,sock):
+        #如果有关闭函数则先执行关闭函数
+        if(sock in self.client_pool):
+            if(self.client_pool[sock].closefunc is not None):
+                self.client_pool[sock].closefunc(self,sock)
+        elif(sock in self.pool):
+            if(self.pool[sock].closefunc is not None):
+                self.pool[sock].closefunc(self,sock)
+
+        #然后回收数据
         if sock in self.inputs:
             self.inputs.remove(sock)
         if sock in self.outputs:
