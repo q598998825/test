@@ -1,15 +1,33 @@
 # coding=utf-8
-import os, sys,importlib,logging
+import os, sys,importlib,logging,threading
 import json
-from src.comm.mycomm import *
+from src.comm.mysingleton import *
 from src.comm.mypthread import *
+from src.comm.mymsg import *
 
 mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"}]
 
 class funcData():
-    opcode = None
-    Proc = None
+    def __init__(self):
+        self.pcode = None
+        self.Proc = None
+        self.msg = []
+        self.sem = threading.Semaphore()
 
+    def addmsg(self,data):
+        self.msg.append(data)
+
+    def getmsg(self):
+        self.lock()
+        if len(self.msg) == 0 :
+            return None
+        return self.msg.pop()
+    def lock(self):
+        self.sem.acquire()
+    def unlock(self):
+        self.sem.release()
+
+@singleton
 class mysys():
     file_list = []
     dir_list = []
@@ -75,7 +93,12 @@ class mysys():
 
     def InitEnvProc(self,arg):
         funcData1 = arg
-        funcData1.Proc("123")
+        while True:
+            #处理进程
+            data = funcData1.getmsg()
+            if data is None:
+                continue
+            funcData1.Proc(data)
 
     def addProcess(self,opcode,program):
         if(opcode in self.FuncList):
@@ -96,3 +119,16 @@ class mysys():
         mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
         mypthread1.start()
         return self.FuncList[opcode]
+
+    def aendmsg(self,MsgPkg):
+        if MsgPkg is None or MsgPkg.To is None:
+            logging.error("msg[%s] has not [To] info" % (str(MsgPkg)))
+            return
+        if MsgPkg.Data is None:
+            logging.error("msg[%s] has not [Data] info" % (str(MsgPkg)))
+            return
+        if MsgPkg.To not in self.FuncList:
+            logging.error("msg.To[%s] not in Funclist" % (str(MsgPkg.To)))
+            return
+        self.FuncList[MsgPkg.To].addmsg(MsgPkg)
+        self.FuncList[MsgPkg.To].unlock()

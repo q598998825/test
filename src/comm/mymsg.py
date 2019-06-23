@@ -1,6 +1,7 @@
 # coding=utf-8
 from mypthread import *
 from mysocket import *
+from mysys.mysys import *
 import logging
 class mymsg():
     pass
@@ -16,4 +17,6 @@ def NativeCall(req,rsp):
     return 0
 
 def sendMsgself(MymsgPkg):
+    mysys1 = mysys()
+    mysys1.aendmsg(MymsgPkg)
     return
