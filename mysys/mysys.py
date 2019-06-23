@@ -7,14 +7,13 @@ from src.comm.mypthread import *
 mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"}]
 
 class funcData():
-    def __init__(self):
-        self.Func = None
-        self.Proc = None
+    opcode = None
+    Proc = None
 
 class mysys():
     file_list = []
     dir_list = []
-    FuncList = []
+    FuncList = {}
     vprogramPath = os.path.abspath("./mysys/config/vprogram.json")
     def __init__(self):
         pass
@@ -75,14 +74,14 @@ class mysys():
                 os._exit(1)
 
     def InitEnvProc(self,arg):
-        program = arg
-        program.Proc("123")
+        funcData1 = arg
+        funcData1.Proc("123")
 
     def addProcess(self,opcode,program):
         if(opcode in self.FuncList):
             return None
         self.FuncList[opcode] = funcData()
-        self.FuncList[opcode].Func = self.InitEnvProc
+        self.FuncList[opcode].opcode = opcode
         self.FuncList[opcode].Proc = program.Proc
         mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
         mypthread1.start()
@@ -92,7 +91,7 @@ class mysys():
         if(opcode in self.FuncList):
             return None
         self.FuncList[opcode] = funcData()
-        self.FuncList[opcode].Func = self.InitEnvProc
+        self.FuncList[opcode].opcode = opcode
         self.FuncList[opcode].Proc = proc
         mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
         mypthread1.start()

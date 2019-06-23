@@ -65,9 +65,9 @@ class mymsgMng():
         self.func_pool[opcode] = Func
         return 0
 
-    def Serverfunc(self, serv, sock, data):
+    def Serverfunc(self, arg):
         #消息分类处理
-        logging.debug(data)
+        logging.debug(arg)
 
     def CloseFunc(self,serv,sock,errcode,errinfo):
         print("closefunc",errcode,errinfo)

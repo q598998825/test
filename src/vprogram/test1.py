@@ -2,9 +2,7 @@
 from mycomm import *
 import logging
 def Init():
-    Arr = []
-    str = ""
-    logging.debug("test1 Init %s"%for_inStr(str,Arr))
+    logging.debug("test1 Init")
     return 0
 
 def Proc(msg):
