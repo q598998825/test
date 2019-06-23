@@ -6,9 +6,15 @@ from src.comm.mypthread import *
 
 mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"}]
 
+class funcData():
+    def __init__(self):
+        self.Func = None
+        self.Proc = None
+
 class mysys():
     file_list = []
     dir_list = []
+    FuncList = []
     vprogramPath = os.path.abspath("./mysys/config/vprogram.json")
     def __init__(self):
         pass
@@ -48,9 +54,7 @@ class mysys():
             #导入文件
             try:
                 program = importlib.import_module(vprogram['file'])
-                program.Init()
-                mypthread1 = mypthread(self.InitEnvProc,program)
-                mypthread1.start()
+                program.Init(self)
             except Exception as e:
                 logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
                 os._exit(1)
@@ -65,8 +69,7 @@ class mysys():
                 if(0 > program.Init()):
                     logging.error("导入python子系统异常[%s]" % (vprogram['name']))
                     os._exit(1)
-                mypthread1 = mypthread(self.InitEnvProc,program)
-                mypthread1.start()
+                self.addProcess(vprogram['name'],program)
             except Exception as e:
                 logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
                 os._exit(1)
@@ -74,3 +77,23 @@ class mysys():
     def InitEnvProc(self,arg):
         program = arg
         program.Proc("123")
+
+    def addProcess(self,opcode,program):
+        if(opcode in self.FuncList):
+            return None
+        self.FuncList[opcode] = funcData()
+        self.FuncList[opcode].Func = self.InitEnvProc
+        self.FuncList[opcode].Proc = program.Proc
+        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
+        mypthread1.start()
+        return self.FuncList[opcode]
+
+    def addProc(self,opcode,proc):
+        if(opcode in self.FuncList):
+            return None
+        self.FuncList[opcode] = funcData()
+        self.FuncList[opcode].Func = self.InitEnvProc
+        self.FuncList[opcode].Proc = proc
+        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
+        mypthread1.start()
+        return self.FuncList[opcode]

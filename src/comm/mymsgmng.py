@@ -55,9 +55,8 @@ class mymsgMng():
         socket1 = mysocket1.sockInit(IsClient=False)
         self.Servip,self.Servport = socket1.sock.getsockname()
         logging.debug("%s,%d"%(self.Servip,self.Servport))
-        mysocketServerPool1 = mysocketServerPool()
-        mysocketServerPool1.addSocket(socket1, self.Serverfunc, self.CloseFunc)
-        mysocketServerPool1.run()
+        mypthread1 = mypthread(self.Serverfunc,self)
+        mypthread1.start()
 
     def register(self,opcode,Func):
         if opcode in self.func_pool:
