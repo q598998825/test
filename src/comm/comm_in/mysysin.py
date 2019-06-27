@@ -1,11 +1,11 @@
 # coding=utf-8
-from mysocket import *
-from mymsg import *
 from mymsgmng import *
 import logging, os
 from mycomm import *
+from mytimermng import *
 
-g_MySysInInitFunc = [{"name": "myMsgInit","notes": "","init": "myMsgInit","proc":None}]
+g_MySysInInitFunc = [{"name": "myMsgInit","notes": "消息系统","init": "myMsgInit","proc":None},
+                     {"name": "Timer","notes": "定时器","init": "myTimerMngInit","proc":"myTimerMngProc"}]
 
 
 def Init(Mysys):
@@ -20,11 +20,4 @@ def Init(Mysys):
         except Exception as e:
             logging.error("基础函数[%s]初始化异常：%s" % (map1["name"], e.__str__()))
             os._exit(1)
-    return 0
-
-def myMsgInit():
-    mymsgMng1 = mymsgMng()
-    mymsgMng1.Init("127.0.0.1",9091,123)
-    mymsgMng2 = mymsgMng()
-    print(mymsgMng1,mymsgMng2)
     return 0

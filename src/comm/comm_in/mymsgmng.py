@@ -4,6 +4,13 @@ from mysocket import *
 import logging
 from mysingleton import *
 
+def myMsgInit():
+    mymsgMng1 = mymsgMng()
+    mymsgMng1.Init("127.0.0.1",9091,123)
+    mymsgMng2 = mymsgMng()
+    print(mymsgMng1,mymsgMng2)
+    return 0
+
 @singleton
 class mymsgMng():
     func_pool = {} #存储okcpde用
