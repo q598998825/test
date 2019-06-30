@@ -11,6 +11,8 @@ class MyMsgPkg():
         self.From = None
         self.To = None
         self.Data = None
+        self.FromId = None
+        self.ToId = None
         self.id = None
 
 def NativeCall(req,rsp):

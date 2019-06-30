@@ -13,5 +13,5 @@ def Init():
     return 0
 
 
-def Proc(msg):
+def Proc(msg:MyMsgPkg):
     logging.debug("test2 Proc")

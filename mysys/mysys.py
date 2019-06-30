@@ -1,5 +1,5 @@
 # coding=utf-8
-import os, sys,importlib,logging,threading
+import os, sys,importlib,logging,threading,traceback
 import json
 from src.comm.mysingleton import *
 from src.comm.mypthread import *
@@ -88,7 +88,7 @@ class mysys():
                     os._exit(1)
                 self.addProcess(vprogram['name'],program)
             except Exception as e:
-                logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                logging.error("导入python子系统异常[%s]：%s \n%s"%(vprogram['name'],e.__str__(),traceback.format_exc()))
                 os._exit(1)
 
     def InitEnvProc(self,arg):
@@ -120,7 +120,7 @@ class mysys():
         mypthread1.start()
         return self.FuncList[opcode]
 
-    def aendmsg(self,MsgPkg):
+    def aendmsg(self,MsgPkg:MyMsgPkg):
         if MsgPkg is None or MsgPkg.To is None:
             logging.error("msg[%s] has not [To] info" % (str(MsgPkg)))
             return
