@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22561fbd-c8de-4083-9d17-607eace62081" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comm/comm_in/mymsgmng.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/comm_in/mymsgmng.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comm/comm_in/mysysin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/comm_in/mysysin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comm/mydatabase.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/mydatabase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vprogram/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vprogram/test1.py" afterDir="false" />
-    </list>
+    <list default="true" id="22561fbd-c8de-4083-9d17-607eace62081" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,8 +96,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/comm/mydatabase.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="590">
+              <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="34" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -408,23 +402,22 @@
       <workItem from="1561871562154" duration="17731000" />
       <workItem from="1561992032225" duration="282000" />
       <workItem from="1562464052968" duration="25377000" />
-      <workItem from="1568546313944" duration="9343000" />
+      <workItem from="1568546313944" duration="10078000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84614000" />
+    <option name="totallyTimeSpent" value="85349000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2489339" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Find" order="3" weight="0.32942432" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" visible="true" weight="0.48106903" />
+      <window_info anchor="bottom" id="Run" order="1" weight="0.48106903" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.3986637" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
@@ -734,8 +727,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comm/mydatabase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="590">
+          <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="34" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
