@@ -4,10 +4,12 @@ import logging, os
 from mycomm import *
 from mytimermng import *
 from globalConfig import *
+from mydatabasemng import *
 
 g_MySysInInitFunc = [{"name": "myBaseConfigInit","notes": "基础配置","init": "globalConfigInit","proc":None},
-                     {"name": "myMsgInit","notes": "消息系统","init": "myMsgMngInit","proc":None},
-                     {"name": "Timer","notes": "定时器","init": "myTimerMngInit","proc":"myTimerMngProc"}]
+                    {"name": "myDatabase","notes": "数据库初始化","init": "myDataBaseInit","proc":None},
+                    {"name": "myMsgInit","notes": "消息系统","init": "myMsgMngInit","proc":None},
+                    {"name": "Timer","notes": "定时器","init": "myTimerMngInit","proc":"myTimerMngProc"}]
 
 
 def Init(Mysys):

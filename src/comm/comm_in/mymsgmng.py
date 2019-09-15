@@ -8,7 +8,7 @@ def myMsgMngInit():
     mymsgMng1 = mymsgMng()
     mymsgMng1.Init("127.0.0.1",9091,123)
     mymsgMng2 = mymsgMng()
-    print(mymsgMng1,mymsgMng2)
+    #print(mymsgMng1,mymsgMng2)
     return 0
 
 @singleton
