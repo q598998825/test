@@ -20,5 +20,5 @@ def NativeCall(req,rsp):
 
 def sendMsgself(MymsgPkg):
     mysys1 = mysys()
-    mysys1.aendmsg(MymsgPkg)
+    mysys1.sendmsg(MymsgPkg)
     return

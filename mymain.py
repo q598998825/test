@@ -1,4 +1,5 @@
 # coding=utf-8
+import time
 from mysys.mysys import *
 def logInit():
     #因为此函数之前不能有logging的调用故放此处

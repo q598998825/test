@@ -3,7 +3,7 @@ import os, sys,importlib,logging,threading,traceback
 import json
 from src.comm.mysingleton import *
 from src.comm.mypthread import *
-from src.comm.mymsg import *
+#from src.comm.mymsg import *
 
 mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"}]
 
@@ -120,7 +120,7 @@ class mysys():
         mypthread1.start()
         return self.FuncList[opcode]
 
-    def aendmsg(self,MsgPkg:MyMsgPkg):
+    def sendmsg(self,MsgPkg):
         if MsgPkg is None or MsgPkg.To is None:
             logging.error("msg[%s] has not [To] info" % (str(MsgPkg)))
             return

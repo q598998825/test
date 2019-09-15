@@ -7,7 +7,7 @@ from othello import *
 
 
 def Init():
-    Game().run()
+    #Game().run()
     return 0
 
 def Proc(msg:MyMsgPkg):

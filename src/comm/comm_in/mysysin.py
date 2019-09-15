@@ -3,8 +3,10 @@ from mymsgmng import *
 import logging, os
 from mycomm import *
 from mytimermng import *
+from globalConfig import *
 
-g_MySysInInitFunc = [{"name": "myMsgInit","notes": "消息系统","init": "myMsgInit","proc":None},
+g_MySysInInitFunc = [{"name": "myBaseConfigInit","notes": "基础配置","init": "globalConfigInit","proc":None},
+                     {"name": "myMsgInit","notes": "消息系统","init": "myMsgMngInit","proc":None},
                      {"name": "Timer","notes": "定时器","init": "myTimerMngInit","proc":"myTimerMngProc"}]
 
 
@@ -18,6 +20,6 @@ def Init(Mysys):
             if False == strIsNone(map1["proc"]):
                 Mysys.addProc(map1["name"],eval(map1["proc"]))
         except Exception as e:
-            logging.error("基础函数[%s]初始化异常：%s" % (map1["name"], e.__str__()))
+            logging.error("基础函数[%s]初始化异常：%s\n%s" % (map1["name"], e.__str__(),traceback.format_exc()))
             os._exit(1)
     return 0

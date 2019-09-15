@@ -4,7 +4,7 @@ from mysocket import *
 import logging
 from mysingleton import *
 
-def myMsgInit():
+def myMsgMngInit():
     mymsgMng1 = mymsgMng()
     mymsgMng1.Init("127.0.0.1",9091,123)
     mymsgMng2 = mymsgMng()
