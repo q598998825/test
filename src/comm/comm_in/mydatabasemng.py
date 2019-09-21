@@ -15,4 +15,5 @@ def myDataBaseProc():
 class myDatabseMng():
     def __init__(self):
         self.conn = sqlite3.connect(GetGlobalConfig()["database"]["datafile"])
+        self.conn.row_factory  = sqlite3.Row
         print("Opened database successfully")
