@@ -35,15 +35,19 @@ class mydatabase_table():
         logging.debug(sql)
         return self.database.cursor.execute(sql)
 
-    def Bind(self,key,value):
+    def bind(self,key,value):
         pass
 
-    def checkTableExist(self,table_name):
-        cursor = self.execSql("SELECT 1 FROM sqlite_master WHERE type='table' and name = '%s'"%table_name)
-        for i in cursor:
-            logging.debug(chr(i[0]) + ',' + chr(i["1"]))
+    def len(self,result):
+        return len(list(result))
+
+    def checkHasResult(self,result):
+        if 0 < self.len(result):
             return True
         return False
+    def checkTableExist(self,table_name):
+        cursor = self.execSql("SELECT 1 FROM sqlite_master WHERE type='table' and name = '%s'"%table_name)
+        return self.checkHasResult(cursor)
 
     def checkTableCols(self):
         pass
