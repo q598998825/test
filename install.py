@@ -1,7 +1,7 @@
 # coding=utf-8
 import os
 
-install_array = {"spacy":['pip install spacy','pip install path/en_core_web_lg-2.0.0.tar.gz']}
+install_array = {"jieba":["pip install jieba"]}
 
 str = input("请输入安装类型：");
 
