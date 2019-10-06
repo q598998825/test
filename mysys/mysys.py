@@ -73,7 +73,7 @@ class mysys():
                 program = importlib.import_module(vprogram['file'])
                 program.Init(self)
             except Exception as e:
-                logging.error("导入python子系统异常[%s]：%s"%(vprogram['name'],e.__str__()))
+                logging.error("导入python子系统异常[%s]：%s\n%s"%(vprogram['name'],e.__str__(),traceback.format_exc()))
                 os._exit(1)
 
         #初始化配置文件进程

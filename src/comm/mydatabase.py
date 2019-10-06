@@ -4,16 +4,31 @@ import logging
 
 class mydatabase():
     def __init__(self):
-        self.cursor = myDatabseMng().conn.cursor()
+        db = getDatabase()
+        if db is None:
+            raise Exception("无法获取数据库连接符")
+        self.conn = db.conn
+        self.cursor = self.conn.cursor()
+        self.state = True
+        self.id = db.id
 
     def __del__(self):
+        self.commit()
         self.cursor.close()
+        freeDatabase(self)
 
     def commit(self):
-        self.cursor.commit()
+        if self.state == True :
+            self.conn.commit()
 
     def rollback(self):
-        self.cursor.rollback()
+        self.conn.rollback()
+
+def getDatabase():
+    return myDatabseMng().GetConn()
+
+def freeDatabase(conn:mydatabase):
+    myDatabseMng().FreeConn(conn)
 
 class mydatabase_table():
     table_infos = {}    #可存复数表信息

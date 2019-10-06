@@ -4,14 +4,16 @@ from mydatabase import *
 class tb_things(mydatabase_table):
     table_infos = {"ai_things":{"table_name":"ai_things",
                                 "desc":"描述事物的表",
-                                "table_col":    [{"col": "NAME", "opt": " VARCHAR(64) PRIMARY KEY NOT NULL"},           #唯一，复用名称不一样
+                                "table_col":    [{"col": "ID", "opt": " NUMBER"},
+                                                {"col": "NAME", "opt": " VARCHAR(64) PRIMARY KEY NOT NULL"},           #唯一，复用名称不一样
                                                 {"col":"TYPE","opt":" VARCHAR(32) NOT NULL"},                           #类型，事物的类型
                                                 {"col": "STATE", "opt": "NUMBER "},                                     # 1为正常数据，0为无没数据
                                                 {"col":"DESC","opt":" VARCHAR(128)"}                                    #注释
                                                 ]},
                    "ai_attr": {"table_name": "ai_attr",
                                  "desc": "描述事物的属性表",
-                                 "table_col": [{"col": "NAME", "opt": " VARCHAR(64) PRIMARY KEY NOT NULL"},
+                                 "table_col": [{"col": "THINGS_ID", "opt": " NUMBER"},
+                                               {"col": "NAME", "opt": " VARCHAR(64) PRIMARY KEY NOT NULL"},
                                                {"col": "TYPE", "opt": " VARCHAR(32)"},  # 类型，事物的类型
                                                {"col": "ATTR_TYPE", "opt": " VARCHAR(32) NOT NULL"},  # 类型，事物的类型
                                                {"col": "STATE", "opt": "NUMBER "},  # 1为正常数据，0为无没数据
@@ -53,15 +55,17 @@ class tb_things(mydatabase_table):
         self.DefaultData()
 
     def DefaultData(self):
-
+        self.DefaultthingsData()
         pass
 
     def DefaultthingsData(self):
-        cursor = self.execSql("SELECT 1 FROM ai_things WHERE NAME='我' ")
+        cursor = self.execSql("SELECT 1 FROM ai_things WHERE ID=0 ")
         if self.checkHasResult(cursor):
             return
         #接下来加数据
-
+        self.execSql("INSERT INTO ai_things (ID, NAME, TYPE, STATE, DESC) VALUES(0 ,'我', 'things', 1, '事物描述')")
+        self.execSql("INSERT INTO ai_things (ID, NAME, TYPE, STATE, DESC) VALUES(1 ,'你', 'things', 1, '事物描述')")
+        self.execSql("INSERT INTO ai_things (ID, NAME, TYPE, STATE, DESC) VALUES(2 ,'他', 'things', 1, '事物描述')")
 
 class tb_cm_things(mydatabase_table):
     table_infos = {"cm_ai_things":{"table_name":"cm_ai_things",
