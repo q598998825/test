@@ -4,12 +4,7 @@
     <list default="true" id="22561fbd-c8de-4083-9d17-607eace62081" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysys/config/mysys.db" beforeDir="false" afterPath="$PROJECT_DIR$/mysys/config/mysys.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysys/config/vprogram.json" beforeDir="false" afterPath="$PROJECT_DIR$/mysys/config/vprogram.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysys/mysys.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysys/mysys.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comm/mydatabase.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/comm/mydatabase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vprogram/myspacy/myspacy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vprogram/myjieba/myjieba.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,19 +29,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mysys/mysys.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="72" selection-start-line="72" selection-end-line="72" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/comm/mydatabase.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+            <state relative-caret-position="204">
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -55,10 +41,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vprogram/pachong/jiexi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="26" selection-start-column="26" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-836">
-              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="385">
+              <caret line="128" column="57" selection-start-line="128" selection-start-column="57" selection-end-line="128" selection-end-column="57" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -67,14 +62,18 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/comm/comm_in/globalConfig.py">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/src/othello/ai.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1116">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mymsgmng.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
+            <state relative-caret-position="-437">
               <caret line="13" column="10" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="10" />
               <folding>
                 <element signature="e#15#38#0" expanded="true" />
@@ -86,7 +85,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
+            <state relative-caret-position="684">
               <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
@@ -107,7 +106,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://D:/Miniconda3/Lib/importlib/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
+            <state relative-caret-position="2375">
               <caret line="126" selection-start-line="126" selection-end-line="126" />
             </state>
           </provider>
@@ -116,8 +115,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4think.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="171">
+              <caret line="9" column="16" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="16" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -128,7 +127,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mysysin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
+            <state relative-caret-position="19">
               <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
               <folding>
                 <element signature="e#15#37#0" expanded="true" />
@@ -176,6 +175,8 @@
       <find>test:</find>
       <find>Opened database successfully</find>
       <find>mydatabase_in</find>
+      <find>tb_cm_things</find>
+      <find>freeDatabase</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -211,11 +212,12 @@
         <option value="$PROJECT_DIR$/install.py" />
         <option value="$PROJECT_DIR$/mysys/config/vprogram.json" />
         <option value="$PROJECT_DIR$/src/vprogram/myjieba/myjieba.py" />
-        <option value="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" />
         <option value="$PROJECT_DIR$/mysys/mysys.py" />
         <option value="$PROJECT_DIR$/src/comm/comm_in/mysysin.py" />
         <option value="$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py" />
         <option value="$PROJECT_DIR$/src/comm/mydatabase.py" />
+        <option value="$PROJECT_DIR$/src/vprogram/pachong/jiexi.py" />
+        <option value="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" />
       </list>
     </option>
   </component>
@@ -233,7 +235,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -294,12 +295,13 @@
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="vprogram" type="462c0819:PsiDirectoryNode" />
-              <item name="myjieba" type="462c0819:PsiDirectoryNode" />
+              <item name="pachong" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -439,17 +441,20 @@
       <workItem from="1570365883357" duration="17000" />
       <workItem from="1570365928441" duration="22000" />
       <workItem from="1570369698880" duration="7137000" />
+      <workItem from="1570430118475" duration="599000" />
+      <workItem from="1570629280750" duration="381000" />
+      <workItem from="1571553878271" duration="6909000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134190000" />
+    <option name="totallyTimeSpent" value="142079000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29371002" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3033049" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Find" order="3" weight="0.32942432" />
@@ -492,18 +497,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pyproject$mymain.coverage" NAME="mymain Coverage Results" MODIFIED="1559484481544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/test$mymain.coverage" NAME="mymain Coverage Results" MODIFIED="1570377074850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/test$mymain.coverage" NAME="mymain Coverage Results" MODIFIED="1571563586758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/test$player.coverage" NAME="player Coverage Results" MODIFIED="1562475449960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/othello" />
     <SUITE FILE_PATH="coverage/test$mytimer.coverage" NAME="mytimer Coverage Results" MODIFIED="1561889305997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/comm" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/importlib/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="126" selection-start-line="126" selection-end-line="126" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mysocket.py" />
     <entry file="file://$PROJECT_DIR$/venv/pyvenv.cfg">
       <provider selected="true" editor-type-id="text-editor" />
@@ -569,13 +567,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="56696">
           <caret line="2984" column="8" selection-start-line="2984" selection-start-column="8" selection-end-line="2984" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/othello/ai.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1235">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
         </state>
       </provider>
     </entry>
@@ -698,13 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/install.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mysys/config/vprogram.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -753,66 +737,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/globalConfig.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mymsgmng.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="13" column="10" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="10" />
-          <folding>
-            <element signature="e#15#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-836">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mysys/mysys.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="1311">
           <caret line="72" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Miniconda3/Lib/importlib/__init__.py">
+    <entry file="file://$PROJECT_DIR$/install.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="126" selection-start-line="126" selection-end-line="126" />
+        <state relative-caret-position="57">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mysysin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
-          <folding>
-            <element signature="e#15#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4think.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/globalConfig.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mydatabasemng.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
+        <state relative-caret-position="684">
           <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
@@ -827,12 +771,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://D:/Miniconda3/Lib/importlib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2375">
+          <caret line="126" selection-start-line="126" selection-end-line="126" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mysysin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding>
+            <element signature="e#15#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/othello/ai.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1116">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vprogram/pachong/jiexi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="26" selection-start-column="26" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comm/comm_in/mymsgmng.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-437">
+          <caret line="13" column="10" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="10" />
+          <folding>
+            <element signature="e#15#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4think.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/comm/mydatabase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+        <state relative-caret-position="204">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="128" column="57" selection-start-line="128" selection-start-column="57" selection-end-line="128" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
