@@ -14,5 +14,3 @@ def Init():
 
 def Proc(msg:MyMsgPkg):
     logging.debug("ai4think Proc %s"%(msg.Data))
-
-

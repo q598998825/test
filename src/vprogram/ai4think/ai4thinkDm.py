@@ -101,7 +101,7 @@ class tb_cm_things(mydatabase_table):
                                                   {"col": "STATE", "opt": "NUMBER "},  # 1为正常数据，0为无没数据
                                                   {"col": "DESC", "opt": " VARCHAR(128)"}  # 注释
                                                   ]},
-                   "ai_actoutputs": {"table_name": "ai_actoutputs",
+                   "cm_ai_actoutputs": {"table_name": "cm_ai_actoutputs",
                                      "desc": "描述行为输出",
                                      "table_col": [{"col": "ACTION_NAME", "opt": "VARCHAR(64) NOT NULL"},  # 行为输入
                                                    {"col": "NAME", "opt": " VARCHAR(64) PRIMARY KEY NOT NULL"},
