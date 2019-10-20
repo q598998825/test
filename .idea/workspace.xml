@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22561fbd-c8de-4083-9d17-607eace62081" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/vprogram/ai4think/ai4think.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vprogram/ai4think/ai4think.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vprogram/ai4think/ai4thinkDm.py" afterDir="false" />
-    </list>
+    <list default="true" id="22561fbd-c8de-4083-9d17-607eace62081" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/makeProgram.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+            <state>
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
@@ -439,12 +436,12 @@
       <workItem from="1570369698880" duration="7137000" />
       <workItem from="1570430118475" duration="599000" />
       <workItem from="1570629280750" duration="381000" />
-      <workItem from="1571553878271" duration="12517000" />
+      <workItem from="1571553878271" duration="13599000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147687000" />
+    <option name="totallyTimeSpent" value="148769000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="546" y="9" width="1377" height="1000" extended-state="0" />
@@ -839,8 +836,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vprogram/ai4think/makeProgram.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+        <state>
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
