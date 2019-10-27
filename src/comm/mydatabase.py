@@ -87,10 +87,10 @@ class mydatabase_table():
     def CreateTable(self,tableInfo):
         self.execSql("CREATE TABLE %s (%s)" % (tableInfo["table_name"],self.col2str(tableInfo)))
 
-    def useDefaultSql(self,sqlKey):
+    def useDefaultSql(self,sqlKey,*param):
         if sqlKey not in self.defaultSql:
             logging.error("it does't has this key in defaultSql")
-            return -1
+            return list()
 
-        return self.execSql(self.defaultSql[sqlKey])
+        return self.execSql(self.defaultSql[sqlKey]%param)
 
