@@ -12,8 +12,9 @@ def Init():
     tb_cm_things1 = tb_cm_things(mydatabase1)
     tb_things1.Init()
     tb_cm_things1.Init()
-    loadProgram1 = loadProgram(mydatabase1)
-    loadProgram1.Init()
+    mydatabase2 = mydatabase()
+    loadProgram1 = loadProgram(mydatabase2)
+    #loadProgram1.Init()
     loadProgram1.load("GetScreen")
     return 0
 

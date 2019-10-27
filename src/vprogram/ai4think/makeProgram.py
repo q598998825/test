@@ -27,15 +27,15 @@ class loadProgram(mydatabase_table):
     def load(self,program_id):
         # 导入文件
         try:
-            data = self.useDefaultSql("getProgram",program_id)
-            if self.len(data) == 0:
+            data = self.GetResult(self.useDefaultSql("getProgram",program_id))
+            if False == self.checkHasResult(data):
                 logging.error("无 program_id[%s] in table ai_program"%program_id)
                 return -1
-
             logging.debug(self.len(data))
             programdata = list(data)[0]
             program = importlib.import_module(programdata['FILE'])
-            if programdata['CLASS'] != "":
+            tmp = programdata['CLASS']
+            if False == self.IsNone(programdata['CLASS']):
                 program = eval("program.%s()"%programdata['CLASS'])
             eval("program.%s()"%programdata['FUNC'])
 

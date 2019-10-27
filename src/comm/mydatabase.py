@@ -94,3 +94,10 @@ class mydatabase_table():
 
         return self.execSql(self.defaultSql[sqlKey]%param)
 
+    def GetResult(self,cursor):
+        return list(cursor)
+
+    def IsNone(self,result):
+        if result is None or result == "":
+            return True
+        return False
