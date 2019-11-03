@@ -48,4 +48,9 @@ class commCode(mydatabase_table):
         filelist = []
         dir_list = []
         get_file_path(projectdir,filelist,dir_list)
+        for file in filelist:
+            with open(filelist, 'rb') as fp:
+                code_data=fp.read()
 
+    def splitLinePy(self,str):
+        return str.split("\r\n")
