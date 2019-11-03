@@ -1,5 +1,4 @@
 from mydatabase import *
-from mydatabase import *
 
 class tb_things(mydatabase_table):
     table_infos = {"ai_things":{"table_name":"ai_things",

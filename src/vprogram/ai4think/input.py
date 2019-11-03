@@ -7,6 +7,7 @@ def GetScreen():
     app = QApplication(sys.argv)
     screen = QApplication.primaryScreen()
     img = screen.grabWindow(QApplication.desktop().winId()).toImage()
+    img.save('123.jpg')
     bytes = img.bits().asstring(img.byteCount())
 
     I = Image.frombuffer('RGBA',(img.width(),img.height()),bytes,'raw', 'RGBA', 0, 1)
