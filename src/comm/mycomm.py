@@ -15,11 +15,11 @@ def strIsNone(str):
 def getDelay(time1):
     return time1 - time.time()
 
-def get_file_path(self,path, file_list, dir_list):
+def get_file_path(path, file_list, dir_list):
     dir_list.append(path)
-    self.get_file_path_in(path, file_list, dir_list)
+    get_file_path_in(path, file_list, dir_list)
 
-def get_file_path_in(self,path, file_list, dir_list):
+def get_file_path_in(path, file_list, dir_list):
     # 获取该目录下所有的文件名称和目录名称
     dir_or_files = os.listdir(path)
     for dir_file in dir_or_files:
@@ -29,6 +29,6 @@ def get_file_path_in(self,path, file_list, dir_list):
         if os.path.isdir(dir_file_path):
             dir_list.append(dir_file_path)
             # 递归获取所有文件和目录的路径
-            self.get_file_path_in(dir_file_path, file_list, dir_list)
+            get_file_path_in(dir_file_path, file_list, dir_list)
         else:
             file_list.append(dir_file_path)

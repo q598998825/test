@@ -49,8 +49,31 @@ class commCode(mydatabase_table):
         dir_list = []
         get_file_path(projectdir,filelist,dir_list)
         for file in filelist:
-            with open(filelist, 'rb') as fp:
+            if True != self.PyfilterFile(file):
+                continue
+            with open(file, 'rb') as fp:
                 code_data=fp.read()
+            code_data = str(code_data,encoding = "utf8")
+            Arraydata = self.PysplitLine(code_data)
+            self.PyDealArrayData(Arraydata)
 
-    def splitLinePy(self,str):
-        return str.split("\r\n")
+    def PysplitLine(self,str):
+        str = str.replace("\r","")
+        return str.split("\n")
+
+    def PyfilterFile(self,str):
+        return str.endswith(".py")
+
+    def PyDealArrayData(self,Arraydata):
+        Arraylen = len(Arraydata)
+        i = 0
+        data = None
+        tail = None
+        while i <Arraylen:
+            i = i + 1
+            if data is not None and tail is not None:
+                self.PyDealArrayDataIn(data)
+        return
+
+    def PyDealArrayDataIn(self, str):
+        pass
