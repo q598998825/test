@@ -4,7 +4,9 @@ import os
 install_array = {"jieba":["pip install jieba"]}
 
 str = input("请输入安装类型：");
-
+'''
+test123
+'''
 if str != "all":
     if str not in install_array:
         print("无此类型的安装命令")
