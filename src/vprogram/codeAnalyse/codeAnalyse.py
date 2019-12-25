@@ -218,7 +218,7 @@ class commCode(mydatabase_table):
         flag[3] 保存字符串比对标识的结束数量
     '''
     def PyCheckIsStr(self,char,flag:[]):
-        if char != '"' || char != "'":
+        if char != '"' or char != "'":
             return flag[0]
 
         if flag[2] == 0:
