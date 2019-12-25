@@ -210,43 +210,47 @@ class commCode(mydatabase_table):
                 tmp += data + "\n"
         return tmpArray
 
-    #检查是否在str范围
-    def PyCheckIsStr(self,i,str):
-        len1 = len(str)
-        if len1  == 0 :
-            return False
-        i = -1
-        num = 0
-        newnum = 0
-        StrChar = ""
-        flag = False
-        while (i <len1):
-            i += 1
-            char = str[i]
-            if StrChar == "'" or StrChar == '"':
-                if char == StrChar:
-                    if flag == True:
-                        newnum += 1
-                        if newnum == num:
-                            num = 0
-                            newnum = 0
-                            flag = False
-                            StrChar = ""
-                            break
-                    else:
-                        if num < 2:
-                            num += 1
-                        else:
-                            num = 3
-                            flag = True
-                else:
-                    if num == 2:
-                        StrChar = ""
-                        num = 0
-                    elif flag == False:
-                        flag = True
-            else:
-                if char == "'" or char == '"':
-                    StrChar = char
-                    num = 1
-        return flag
+    #检查是否在str范围 flag最初为=[0,'',0,0],使用时得PyCheckIsStr(char,flag) ,返回值不为0则为字符串
+    '''
+        flag[0] 表示是否是字符串范围 0非字符串 1待比对字符串开始标识 
+        flag[1] 保存字符串的比对标识
+        flag[2] 保存字符串比对标识的开始数量
+        flag[3] 保存字符串比对标识的结束数量
+    '''
+    def PyCheckIsStr(self,char,flag:[]):
+        if char != '"' || char != "'":
+            return flag[0]
+
+        if flag[2] == 0:
+            if char == "'" or char == '"': #置初始
+                flag[0] = 1
+                flag[1] = char
+                flag[2] = 1
+                flag[3] = 0
+                return flag[0]
+        else if flag[2] == 1 or flag[2] == 3: #1或3都有可能识别成字符串
+            if char != flag[1]: #不是识别符，则清结束数量
+                flag[3] = 0
+                return flag[0]
+            if flag[2] == 1：
+                flag[0] = 0
+                flag[2] = 2
+                return flag[0]
+            flag[3]+=1
+            if flag[3] == 3:
+                flag[0] = 0
+                flag[1] = ''
+                flag[2] = 0
+                flag[3] = 0
+            return 1 #即使最后一个字符串标识符也是按1返回
+        else if flag[2] == 2: #
+            if char != flag[1]: #重置
+                flag[0] = 0
+                flag[1] = ''
+                flag[2] = 0
+                flag[3] = 0
+                return flag[0]
+            flag[0] = 1
+            flag[2] = 3
+            return flag[0]
+            
