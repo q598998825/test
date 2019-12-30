@@ -1,6 +1,31 @@
-import  logging
+import  logging, re
 from mydatabase import *
 from mycomm import *
+
+class CommCodeData():
+    def __init__(self,line,Data):
+        self.line = str(line)
+        self.data = Data
+        self.func = ""
+        self.classname = ""
+
+class CommCodeDataMap():
+    def __init__(self,ArrayData):
+        self.list = []
+        i = 0 
+        for Data in ArrayData:
+            i += 1
+            CommCodeData1 = CommCodeData(i,Data)
+            self.list.append(CommCodeData1)
+    
+    def append(self,CommCodeData1:CommCodeData):
+        self.list.append(CommCodeData1)
+
+    def __len__(self):
+        return len(self.list)
+
+    def clear(self):
+        self.list.clear()
 
 class commCode(mydatabase_table):
     table_infos = {"code_var":{"table_name":"code_var",
@@ -63,59 +88,53 @@ class commCode(mydatabase_table):
         str = str.replace("\r","")
         str = str.replace("\t", " ")
         Array = str.split("\n")
-        return self.PyMergeStr(Array)
+        #统计行号
+        CommCodeDataMap1 = CommCodeDataMap(Array)
+        return self.PyMergeStr(CommCodeDataMap1)
     #过滤文件名
     def PyfilterFile(self,str):
         return str.endswith(".py")
     #处理代码每行的数据
-    def PyDealArrayData(self,Arraydata):
-        mindata = []
+    def PyDealArrayData(self,Arraydata:CommCodeDataMap):
+        mindata = CommCodeDataMap([])
         minfunc = ""
         minclass = ""
-        oldStr = None
-        tabnum = self.PyGetTabNum(Arraydata[0])
-        for data in Arraydata:
-            if oldStr is not None:
-                self.PyDealArrayDataIn(mindata, minfunc, minclass)
-                mindata.clear()
-                oldStr = None
-
-            tabnumTmp = self.PyGetTabNum(data)  # 获取子范围内的数据
+        tabnum = self.PyGetTabNum(Arraydata.list[0].data)
+        for Mapdata in Arraydata.list:
+            tabnumTmp = self.PyGetTabNum(Mapdata.data)  # 获取子范围内的数据
             if (tabnumTmp > tabnum):
-                mindata.append(data)
+                mindata.append(Mapdata)
 
             if tabnumTmp == tabnum:
                 if (len(mindata) > 0):
-                    oldStr = data
-                self.PyGetInfo(data)
+                    self.PyDealArrayDataIn(mindata, minfunc, minclass)
+                    mindata.clear()
+                self.PyGetInfo(Mapdata)
         if (len(mindata) > 0):
             self.PyDealArrayDataIn(mindata, minfunc, minclass)
 
         return
     #递归处理每行的数据
-    def PyDealArrayDataIn(self, Arraydata, func, classname):
-        mindata = []
+    def PyDealArrayDataIn(self, Arraydata:CommCodeDataMap, func, classname):
+        mindata = CommCodeDataMap([])
         minfunc = func
         minclass = classname
-        oldStr = None
-        tabnum = self.PyGetTabNum(Arraydata[0])
-        for data in Arraydata:
-            if oldStr is not None:
-                self.PyDealArrayDataIn(mindata,minfunc,minclass)
-                mindata.clear()
-                oldStr = None
+        tabnum = self.PyGetTabNum(Arraydata.list[0].data)
 
-            tabnumTmp = self.PyGetTabNum(data)#获取子范围内的数据
+        for Mapdata in Arraydata.list:
+            tabnumTmp = self.PyGetTabNum(Mapdata.data)#获取子范围内的数据
             if(tabnumTmp > tabnum):
-                mindata.append(data)
+                mindata.append(Mapdata)
 
             if tabnumTmp == tabnum:
                 if (len(mindata) > 0):
-                    oldStr = data
-                self.PyGetInfo(data)
+                    self.PyDealArrayDataIn(mindata,minfunc,minclass)
+                    mindata.clear()
+                self.PyGetInfo(Mapdata)
         if(len(mindata)>0):
             self.PyDealArrayDataIn(mindata, minfunc, minclass)
         pass
+
     #获取代码前置数
     def PyGetTabNum(self,data):
         ret = 0
@@ -126,48 +145,102 @@ class commCode(mydatabase_table):
             break
         return ret
     #获取变量和变量定义
-    def PyGetParam(self,data):
+    def PyGetParam(self,Mapdata:CommCodeData):
         flag = 0
-        data = self.delNotes(data)
-        for char in data:
-            continue
+        value = self.GetKeyLeftAndRight(Mapdata.data,'=')
+        if len(value) == 0:
+            return flag
+        
         return flag
     #获取函数
-    def PyGetFunc(self,data):
-        data = self.delNotes(data)
+    def PyGetFunc(self,data:CommCodeData):
         return 0
     #获取类
-    def PyGetClass(self,data):
-        data = self.delNotes(data)
+    def PyGetClass(self,data:CommCodeData):
         return 0
+
+    def reverse(self,str):
+        return str[::-1]
+
+    def checkInNormalstr(self,char):
+        ret = re.match("[a-zA-Z0-9_]",char)
+        if ret == None :
+            return False
+        return True
+        
+    def GetKeyLeftAndRight(self,str,keychar):
+        flag=[0,'',0,0]
+        len1 = len(str)
+        i = 0
+        leftValue = ""
+        while(i < len1):
+            if 0 == self.PyCheckIsStr(str[i],flag) :
+                if str[i] != keychar:
+                    if self.checkInNormalstr(str[i]):
+                        leftValue += str[i]
+                    else:
+                        leftValue = "" #清掉
+                    
+                elif str[i] == keychar:
+                    #去掉如==之类的情况
+                    if(i+1<len1 and str[i+1] != keychar):
+                        rightValue = str[i+1].lstrip()
+                        i=0
+                        len1=len(rightValue)
+                        while (i < len1):
+                            if False == self.checkInNormalstr(str[i]):
+                                rightValue = rightValue[0:i]
+                                break
+                        return [leftValue,rightValue]
+                    
+                    while(i+1<len1 and str[i+1] == keychar):
+                        i+=1
+                        self.PyCheckIsStr(str[i],flag) #为了保证字符串判定正常
+                
+            i+=1
+        return []
+
+        
+        
     #获取信息
-    def PyGetInfo(self,data):
-        if self.PyGetParam(data) >0:
-            return 1
-        if self.PyGetFunc(data) >0:
-            return 2
-        if self.PyGetClass(data) >0:
-            return 3
-        return 0
+    def PyGetInfo(self,Mapdata:CommCodeData):
+        logging.debug('PyGetInfo [%s]%s'%(Mapdata.line,Mapdata.data))
+        Mapdata.data = self.delNotes(Mapdata.data)
+        retval =0;
+        if self.PyGetParam(Mapdata) >0:
+            retval +=1
+        if self.PyGetFunc(Mapdata) >0:
+            retval +=2
+        if self.PyGetClass(Mapdata) >0:
+            retval +=4
+        return retval
+    
     #删除行注释
     def delNotes(self,str):
+        flag=[0,'',0,0]
         len1 = len(str)
-        while len1 >= 0:
-            len1 -= 1
-            if str[len1] == "#":
-                break
-        pass
+        i = 0
+        while(i < len1):
+            if(0 == self.PyCheckIsStr(str[i],flag) and str[i] == '#'):#后续都是注释干掉
+                return str[0:i]
+            i+=1
+        return str
+
     #合并数组 合并\换行以及 ''' 和"""的字符串数组
-    def PyMergeStr(self,Array):
-        tmpArray = []
+    def PyMergeStr(self,Array:CommCodeDataMap):
+        tmpArray = CommCodeDataMap([])
         num = 0
         newnum = 0
         StrChar = ""
         tmp = ""
         flag = False
         appendFlag = True
-        for data in Array:
+        lineStart = ""
+        for Mapdata in Array.list:
             #如果是\最后的话，不管是不是字符串都合并
+            data = Mapdata.data
+            if lineStart == "":
+                lineStart = Mapdata.line
             dataArr=data.split("\\")
             if len(dataArr) >1 and len(dataArr[-1].replace(" ","")) == 0:
                 tmp += data + "\n"
@@ -204,7 +277,9 @@ class commCode(mydatabase_table):
                         num = 1
 
             if appendFlag == True:
-                tmpArray.append(tmp + data)
+                CommCodeData1 = CommCodeData(lineStart + "_" + Mapdata.line,tmp + data)
+                tmpArray.append(CommCodeData1)
+                lineStart = ""
                 tmp = ""
             else:
                 tmp += data + "\n"
@@ -228,11 +303,11 @@ class commCode(mydatabase_table):
                 flag[2] = 1
                 flag[3] = 0
                 return flag[0]
-        else if flag[2] == 1 or flag[2] == 3: #1或3都有可能识别成字符串
+        elif flag[2] == 1 or flag[2] == 3: #1或3都有可能识别成字符串
             if char != flag[1]: #不是识别符，则清结束数量
                 flag[3] = 0
                 return flag[0]
-            if flag[2] == 1：
+            if flag[2] == 1:
                 flag[0] = 0
                 flag[2] = 2
                 return flag[0]
@@ -243,7 +318,7 @@ class commCode(mydatabase_table):
                 flag[2] = 0
                 flag[3] = 0
             return 1 #即使最后一个字符串标识符也是按1返回
-        else if flag[2] == 2: #
+        elif flag[2] == 2: #
             if char != flag[1]: #重置
                 flag[0] = 0
                 flag[1] = ''
