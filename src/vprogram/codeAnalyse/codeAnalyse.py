@@ -150,10 +150,17 @@ class commCode(mydatabase_table):
         value = self.GetKeyLeftAndRight(Mapdata.data,'=')
         if len(value) == 0:
             return flag
+        leftKey = value[0]
         
         return flag
     #获取函数
     def PyGetFunc(self,data:CommCodeData):
+        KeyIndex=data.data.find("def ")
+        if KeyIndex == -1:
+            return 0
+        i = KeyIndex + 4 #偏移长度
+        ilen = len(data.data)
+
         return 0
     #获取类
     def PyGetClass(self,data:CommCodeData):
@@ -167,36 +174,69 @@ class commCode(mydatabase_table):
         if ret == None :
             return False
         return True
-        
-    def GetKeyLeftAndRight(self,str,keychar):
+    
+    def compareKey(self,str,keystr):
+        tmp=str[0:len(keystr)]
+        if tmp == keystr:
+            return True
+        return False
+
+    def GetKeyIndex(self,str,keystr):
+        flag=[0,'',0,0]
+        len1 = len(str)
+        i = 0
+        lenkey=len(keystr)
+        while(i < len1):
+            if 0 == self.PyCheckIsStr(str[i],flag) :
+                if True == self.compareKey(str[i:],keystr):
+                    #去掉如==之类的情况
+                    if(i+lenkey<len1 and True != self.compareKey(str[i+lenkey:],keystr):
+                        return i
+                    
+                    while(i+lenkey<len1 and True == self.compareKey(str[i+lenkey:],keystr)):
+                        j=0
+                        while(j<lenkey):
+                            self.PyCheckIsStr(str[i],flag) #为了保证字符串判定正常
+                        i+=lenkey
+            i+=1
+        return []
+
+    def GetKeyLeftAndRight(self,str,keystr):
         flag=[0,'',0,0]
         len1 = len(str)
         i = 0
         leftValue = ""
+        lenkey=len(keystr)
         while(i < len1):
             if 0 == self.PyCheckIsStr(str[i],flag) :
-                if str[i] != keychar:
+                if str[i] == " ":
+                    while str[i]==" ":
+                        i+=1
+                    if True != self.compareKey(str[i:],keystr):
+                        leftValue = "" #清掉
+
+                if True != self.compareKey(str[i:],keystr):
                     if self.checkInNormalstr(str[i]):
                         leftValue += str[i]
                     else:
                         leftValue = "" #清掉
                     
-                elif str[i] == keychar:
+                elif True == self.compareKey(str[i:],keystr):
                     #去掉如==之类的情况
-                    if(i+1<len1 and str[i+1] != keychar):
-                        rightValue = str[i+1].lstrip()
+                    if(i+lenkey<len1 and True != self.compareKey(str[i+lenkey:],keystr):
+                        keyIndex = i
+                        rightValue = str[i+lenkey].lstrip()
                         i=0
                         len1=len(rightValue)
                         while (i < len1):
                             if False == self.checkInNormalstr(str[i]):
                                 rightValue = rightValue[0:i]
                                 break
-                        return [leftValue,rightValue]
+                        return [keyIndex,leftValue,rightValue]
                     
-                    while(i+1<len1 and str[i+1] == keychar):
-                        i+=1
+                    while(i+lenkey<len1 and True == self.compareKey(str[i+lenkey:],keystr)):
+                        i+=lenkey
                         self.PyCheckIsStr(str[i],flag) #为了保证字符串判定正常
-                
             i+=1
         return []
 
