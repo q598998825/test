@@ -3,7 +3,7 @@ import json
 g_BaseConfig = None
 
 def globalConfigInit():
-    MySysConfig = "./mysys/config/config.json"
+    MySysConfig = "./mysysdir/config/config.json"
     global g_BaseConfig
 
     file = open(MySysConfig, 'r', encoding='utf-8')
