@@ -1,6 +1,9 @@
 # coding=utf-8
 import threading
 
+# 创建全局ThreadLocal对象:
+lThreadPool = threading.local()
+
 class mypthread(threading.Thread):
     def __init__(self, func, arg):
         super(mypthread, self).__init__()  # 注意：一定要显式的调用父类的初始化函数。
@@ -9,3 +12,5 @@ class mypthread(threading.Thread):
 
     def run(self):  # 定义每个线程要运行的函数
         self.func(self.arg)
+
+
