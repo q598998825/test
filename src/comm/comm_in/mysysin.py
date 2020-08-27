@@ -5,6 +5,7 @@ from mycomm import *
 from mytimermng import *
 from globalConfig import *
 from mydatabasemng import *
+from myCommDM import *
 
 g_MySysInInitFunc = [{"name": "myBaseConfigInit","notes": "基础配置","init": "globalConfigInit","proc":None},
                     {"name": "myDatabase","notes": "数据库初始化","init": "myDataBaseInit","proc":None},
