@@ -3,7 +3,7 @@ import os, sys,importlib,logging,threading,traceback
 import json
 from src.comm.mysingleton import *
 from src.comm.mypthread import *
-#from src.comm.mymsg import *
+from src.comm.mydatabase import *
 
 mySysMustInit = [{"name": "mysysin","file": "mysysin","notes": "统一初始化"}]
 
@@ -32,7 +32,7 @@ class mysys():
     file_list = []
     dir_list = []
     FuncList = {}
-    vprogramPath = os.path.abspath("./mysys/config/vprogram.json")
+    vprogramPath = os.path.abspath("./mysysdir/config/vprogram.json")
     def __init__(self):
         pass
 
@@ -76,6 +76,9 @@ class mysys():
                 logging.error("导入python子系统异常[%s]：%s\n%s"%(vprogram['name'],e.__str__(),traceback.format_exc()))
                 os._exit(1)
 
+        lThreadPool.opcode = "mysys"
+        lThreadPool.mydatabase1 = mydatabase()
+
         #初始化配置文件进程
         file = open(self.vprogramPath, 'r', encoding='utf-8')
         vprogram_list = json.load(file)
@@ -87,18 +90,29 @@ class mysys():
                     logging.error("导入python子系统异常[%s]" % (vprogram['name']))
                     os._exit(1)
                 self.addProcess(vprogram['name'],program)
+                lThreadPool.mydatabase1.commit()
             except Exception as e:
                 logging.error("导入python子系统异常[%s]：%s \n%s"%(vprogram['name'],e.__str__(),traceback.format_exc()))
+                lThreadPool.mydatabase1.rollback()
                 os._exit(1)
 
     def InitEnvProc(self,arg):
         funcData1 = arg
+        if funcData1 is not None: #初始化
+            lThreadPool.opcode = funcData1.opcode
+            lThreadPool.mydatabase1 = mydatabase()
+
         while True:
             #处理进程
             data = funcData1.getmsg()
             if data is None:
                 continue
-            funcData1.Proc(data)
+            try:
+                funcData1.Proc(data)
+                lThreadPool.mydatabase1.commit()
+            except Exception as e:
+                logging.error("执行opcode异常[%s]：%s \n%s" % (funcData1.opcode, e.__str__(), traceback.format_exc()))
+                lThreadPool.mydatabase1.rollback()
 
     def addProcess(self,opcode,program):
         if(opcode in self.FuncList):
