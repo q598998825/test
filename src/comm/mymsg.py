@@ -1,7 +1,7 @@
 # coding=utf-8
 from mypthread import *
 from mysocket import *
-from mysys.mysys import *
+from mysysdir.mysys import *
 import logging
 class mymsg():
     pass
