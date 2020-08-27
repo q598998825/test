@@ -17,7 +17,8 @@ class mymsgMng():
     ids_pool = {}   #存储服务用
     Servip = ""     #提供给opcode的服务ip
     Servport = 0    #提供给opcode的
-
+    opcode = "mymsgMng"
+    
     def Init(self,ip,port,id):
         #初始化环境用
         if(0 > self.registerServ(ip,port,id)):
