@@ -4,18 +4,12 @@ import logging
 
 class mydatabase():
     def __init__(self):
+        self.state = True
         db = getDatabase()
         if db is None:
             raise Exception("无法获取数据库连接符")
         self.conn = db.conn
-        self.cursor = self.conn.cursor()
-        self.state = True
-        self.id = db.id
-
-    def __del__(self):
-        self.commit()
-        self.cursor.close()
-        freeDatabase(self)
+        #self.cursor = self.conn.cursor()
 
     def commit(self):
         if self.state == True :
@@ -42,9 +36,13 @@ class mydatabase_table():
     {"key1":"sql1",
     "key2":"sql2"}
     '''
-    def __init__(self,mydatabase:mydatabase):
-        self.database = mydatabase
+    def __init__(self):
+        self.database = lThreadPool.mydatabase1
+        self.database.cursor = self.database.conn.cursor()
         pass
+
+    def commit(self):
+        self.database.commit()
 
     def execSql(self,sql):
         logging.debug(sql)
