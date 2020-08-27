@@ -2,6 +2,6 @@
   "database": {
     "desc": "数据库配置",
     "mode": "1" ,
-    "datafile": "./mysys/config/mysys.db"
+    "datafile": "./mysysdir/config/mysys.db"
   }
 }
