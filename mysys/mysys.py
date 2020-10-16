@@ -120,7 +120,7 @@ class mysys():
         self.FuncList[opcode] = funcData()
         self.FuncList[opcode].opcode = opcode
         self.FuncList[opcode].Proc = program.Proc
-        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
+        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode],opcode)
         mypthread1.start()
         return self.FuncList[opcode]
 
@@ -130,7 +130,7 @@ class mysys():
         self.FuncList[opcode] = funcData()
         self.FuncList[opcode].opcode = opcode
         self.FuncList[opcode].Proc = proc
-        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode])
+        mypthread1 = mypthread(self.InitEnvProc, self.FuncList[opcode],opcode)
         mypthread1.start()
         return self.FuncList[opcode]
 
