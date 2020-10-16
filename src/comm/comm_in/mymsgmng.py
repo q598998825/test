@@ -18,7 +18,7 @@ class mymsgMng():
     Servip = ""     #提供给opcode的服务ip
     Servport = 0    #提供给opcode的
     opcode = "mymsgMng"
-    
+
     def Init(self,ip,port,id):
         #初始化环境用
         if(0 > self.registerServ(ip,port,id)):
@@ -53,7 +53,7 @@ class mymsgMng():
             return -1
         else:
             logging.debug("分配服务成功")
-            mysocketServerPool1 = mysocketServerPool()
+            mysocketServerPool1 = mysocketServerPool(self.opcode)
             mysocketServerPool1.addSocket(socket1, self.registServerfunc,self.registCloseFunc)
             mysocketServerPool1.run()
         return 0
@@ -63,7 +63,7 @@ class mymsgMng():
         socket1 = mysocket1.sockInit(IsClient=False)
         self.Servip,self.Servport = socket1.sock.getsockname()
         logging.debug("%s,%d"%(self.Servip,self.Servport))
-        mypthread1 = mypthread(self.Serverfunc,self)
+        mypthread1 = mypthread(self.Serverfunc,self,self.opcode)
         mypthread1.start()
 
     def register(self,opcode,Func):
