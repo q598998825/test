@@ -45,7 +45,22 @@
 -- 接收文件数据
 <12 recv	ClientSock1 21>
 
--- 故意超时
-<12 socketSleep	20 21>
+-- 故意超时， 也可以不超时
+<12 socketSleep	4 21>
 
+-- 返回文件接收成功
+<12 send	ClientSock	226 File receive OK.
+ 21>  
+
+-- 接收重命名 RNFR /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200.tmp
+<12 recv	ClientSock 21>
+<12 send	ClientSock	350 Ready for RNTO.
+ 21>   
+
+-- 接收重命名 RNTO /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200
+<12 recv	ClientSock 21>
+<12 send	ClientSock	250 Rename successful.
+ 21>   
+ 
+ 
  21>
