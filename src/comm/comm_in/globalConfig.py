@@ -1,5 +1,8 @@
-import json
+import json,threading
 
+# 创建全局ThreadLocal对象:
+lThreadPool = threading.local()
+lThreadPool.opcode = "Init"
 g_BaseConfig = None
 
 def globalConfigInit():
