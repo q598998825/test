@@ -1,5 +1,4 @@
-from mydatabasemng import *
-from mysingleton import *
+from src.comm.comm_in.mydatabasemng import *
 import logging
 
 class mydatabase():
@@ -69,8 +68,8 @@ class mydatabase_table():
         for tableName in self.table_infos:
             if(False == self.checkTableExist(tableName)):
                 self.CreateTable(self.table_infos[tableName])
-                logging.debug("test1")
-            logging.debug("test2")
+                #logging.debug("test1")
+            #logging.debug("test2")
 
     def col2str(self,tableinfo):
         tmp = ""
