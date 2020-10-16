@@ -81,9 +81,10 @@ class mysocketServerPool():
     needclose = []
     bufsize = 1024
     mutex = threading.Lock()
-    def __init__(self):
+    def __init__(self,opcode):
         self.FucMap = {"TCP":{"add":self.addTcpSocket,'del':self.delTcpSocket},
                        "UDP":{"add":self.addTcpSocket,'del':self.delTcpSocket}}
+        self.opcode = opcode
 
     def addSocket(self,socket1,Func,CloseFunc = None):
         if(True != isinstance(socket1,mysock)):
@@ -127,7 +128,7 @@ class mysocketServerPool():
 
     def run(self):
         if None is self.mypthread1:
-            self.mypthread1 = mypthread(self.Func,None)
+            self.mypthread1 = mypthread(self.Func,None,self.opcode)
             self.mypthread1.start()
 
     def dealReadable(self,readable):
