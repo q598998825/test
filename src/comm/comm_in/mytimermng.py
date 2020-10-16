@@ -1,6 +1,5 @@
 # coding=utf-8
 from mysingleton import *
-from mypthread import *
 import threading,logging,time
 from mymsg import *
 from mycomm import *
