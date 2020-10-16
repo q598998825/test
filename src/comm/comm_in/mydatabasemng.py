@@ -1,6 +1,6 @@
-from globalConfig import *
-from mypthread import lThreadPool
-from mysingleton import *
+from src.comm.comm_in.globalConfig import *
+from src.comm.mypthread import *
+from src.comm.mysingleton import *
 import sqlite3, threading
 
 
@@ -12,12 +12,13 @@ def myDataBaseInit():
 def myDataBaseProc():
     pass
 
-@singleton
+myDatabseMngConn ={}
+
 class myDatabseMng():
     maxConnNum = 20
     def __init__(self):
-        self.conn = {}
-        #self.lock = threading.RLock()
+        self.conn = myDatabseMngConn
+        self.lock = threading.RLock()
         '''
         for i in range(self.maxConnNum):
             self.conn.append(mydatabase_in())
@@ -28,14 +29,13 @@ class myDatabseMng():
         print("Opened database successfully")
 
     def GetConn(self):
-        #self.lock.acquire()
+        self.lock.acquire()
         #conn = None
-
         if lThreadPool.opcode not in self.conn:
             self.conn[lThreadPool.opcode] = mydatabase_in()
             self.conn[lThreadPool.opcode].conn = sqlite3.connect(GetGlobalConfig()["database"]["datafile"])
             self.conn[lThreadPool.opcode].conn.row_factory = sqlite3.Row
-        #self.lock.release()
+        self.lock.release()
         return self.conn[lThreadPool.opcode]
 
     def FreeConn(self,conn):
