@@ -1,66 +1,66 @@
-<12 socket	TCP	10.132.30.25	10096	
-<12 accecpt	ClientSock 21>
+<12 socket, TCP,    10.132.30.25,   10096,{
+<12 accecpt,    ClientSock 21>
 
 -- 登录成功
-<12 send	ClientSock	2 OK 21>
+<12 send,   ClientSock, 2 OK 21>
 
 -- 用户名正确
-<12 recv	ClientSock 21>
-<12 send	ClientSock	123
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 123
 3 21>
 
 -- 密码正确
-<12 recv	ClientSock 21>
-<12 send	ClientSock	230 
-230  21>
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 230
+230 1 21>
 
 -- 操作类型正确 TYPE I
-<12 recv	ClientSock 21>
-<12 send	ClientSock	200 Switching to Binary mode.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 200 Switching to Binary mode.
  21>
 
 -- 路径切换正确
-<12 recv	ClientSock 21>
-<12 send	ClientSock	250 Directory successfully changed.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 250 Directory successfully changed.
  21>
 
 -- 路径切换正确
-<12 recv	ClientSock 21>
-<12 send	ClientSock	250 Directory successfully changed.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 250 Directory successfully changed.
  21> 
 
 -- 模式切换正确 PASV
-<12 recv	ClientSock 21>
-<12 send	ClientSock	227 Entering Passive Mode (10,132,30,25,39,112)
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, {227 Entering Passive Mode (10,132,30,25,39,112)}
  21>  
 
 -- 接收一个文件传输连接
-<12 accecpt	ClientSock1 21>
+<12 accecpt,    ClientSock1 21>
  
 -- 可以发送数据 STOR /ftproot/ESP/ESOP_ORDER_DATA_200123.tmp
-<12 recv	ClientSock 21>
-<12 send	ClientSock	150 Ok to send data.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 150 Ok to send data.
  21>  
 
 -- 接收文件数据
-<12 recv	ClientSock1 21>
+<12 recv,   ClientSock1 21>
 
 -- 故意超时， 也可以不超时
-<12 socketSleep	4 21>
+<12 sleep,    4 21>
 
 -- 返回文件接收成功
-<12 send	ClientSock	226 File receive OK.
+<12 send,   ClientSock, 226 File receive OK.
  21>  
 
 -- 接收重命名 RNFR /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200.tmp
-<12 recv	ClientSock 21>
-<12 send	ClientSock	350 Ready for RNTO.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 350 Ready for RNTO.
  21>   
 
 -- 接收重命名 RNTO /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200
-<12 recv	ClientSock 21>
-<12 send	ClientSock	250 Rename successful.
+<12 recv,   ClientSock 21>
+<12 send,   ClientSock, 250 Rename successful.
  21>   
  
- 
+ }
  21>
