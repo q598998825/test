@@ -1,3 +1,4 @@
+# coding=utf-8
 import logging
 from mymsg import *
 from vscript import *
