@@ -1,3 +1,4 @@
+# coding=utf-8
 import logging,os,traceback,copy
 
 from vscript_rule import *
