@@ -1,4 +1,5 @@
 # coding=utf-8
+import install
 import time
 from mysysdir.mysys import *
 def logInit():
