@@ -1,3 +1,4 @@
+# coding=utf-8
 import logging,os
 from vscript_rule import *
 from mydatabase import *
