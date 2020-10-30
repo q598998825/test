@@ -3,9 +3,9 @@ import logging,socket,time,re
 from wsgiref.simple_server import make_server
 from myCommDM import *
 from vpro_socket import *
+from vpro_http import *
 
-
-class vpro_rule(vpro_socket):
+class vpro_rule(vpro_socket,vpro_http):
     def __init__(self):
         comm_param1 = comm_param()
         self.startKey = comm_param1.GetResult(comm_param1.useDefaultSql("getValue", "VSCRIPT_STARTKEY"))[0]["VALUE"]
@@ -18,6 +18,7 @@ class vpro_rule(vpro_socket):
         self.SocketServerKey="ServerSock"
         #子类初始化
         vpro_socket.__init__(self)
+        vpro_http.__init__(self)
 
     def exec(self,tmpvscript,file_context):
         #初始化数据
