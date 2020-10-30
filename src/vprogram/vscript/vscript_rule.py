@@ -142,3 +142,6 @@ class vpro_rule(vpro_socket,vpro_http):
                 logging.error("CheckIsStr 校验是否是字符串，左括号和右括号不对称，str[%s],index[%s]" % (str, index))
                 return False
         return i > 0
+
+    def getData(self,str):
+        self.Data[str]
