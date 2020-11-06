@@ -4,7 +4,9 @@ from wsgiref.simple_server import make_server
 '''
 循环安装脚本
 '''
-install_array = {"jieba":["pip install jieba"]}
+install_array = {"jieba":["pip install jieba"],
+                 "django":["pip install django"],
+                 "requests":["pip install requests"]}
 
 '''
 test123
