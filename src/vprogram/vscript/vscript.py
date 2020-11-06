@@ -19,8 +19,8 @@ class vscript:
         for tmpvscript in self.vscriptList:
             Data = {}
             Data["data"] = tmpvscript
-            Data["opcode"]="vscript"
-            mypthread1 = mypthread(self.Proc, Data,"vscript")
+            Data["opcode"]="vscript_%s"%tmpvscript["NAME"]
+            mypthread1 = mypthread(self.Proc, Data,Data["opcode"])
             mypthread1.start()
 
     def Proc(self,arg):
@@ -38,3 +38,4 @@ class vscript:
             logging.error("vscript 执行任务异常 [%s]：%s \n%s" % (tmpvscript["NAME"], e.__str__(), traceback.format_exc()))
         finally:
             file.close()
+            lThreadPool.mydatabase1.commit()
