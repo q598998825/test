@@ -27,20 +27,20 @@
 -- 路径切换正确
 <12 recv,   ClientSock 21>
 <12 send,   ClientSock, 250 Directory successfully changed.
- 21> 
+ 21>
 
 -- 模式切换正确 PASV
 <12 recv,   ClientSock 21>
 <12 send,   ClientSock, {227 Entering Passive Mode (10,132,30,25,39,112)}
- 21>  
+ 21>
 
 -- 接收一个文件传输连接
 <12 accecpt,    ClientSock1 21>
- 
+
 -- 可以发送数据 STOR /ftproot/ESP/ESOP_ORDER_DATA_200123.tmp
 <12 recv,   ClientSock 21>
 <12 send,   ClientSock, 150 Ok to send data.
- 21>  
+ 21>
 
 -- 接收文件数据
 <12 recv,   ClientSock1 21>
@@ -50,17 +50,17 @@
 
 -- 返回文件接收成功
 <12 send,   ClientSock, 226 File receive OK.
- 21>  
+ 21>
 
 -- 接收重命名 RNFR /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200.tmp
 <12 recv,   ClientSock 21>
 <12 send,   ClientSock, 350 Ready for RNTO.
- 21>   
+ 21>
 
 -- 接收重命名 RNTO /ftproot/cmop/way/down/CM_CU_GROUPEXTEND_DAY_123_200
 <12 recv,   ClientSock 21>
 <12 send,   ClientSock, 250 Rename successful.
- 21>   
- 
+ 21>
+
  }
  21>
