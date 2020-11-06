@@ -3,6 +3,7 @@ import logging,socket
 
 class vpro_socket:
     def __init__(self):#子类统一初始化
+        self.SocketServerKey = "ServerSock"
         pass
 
     def socket(self,str):
@@ -14,37 +15,24 @@ class vpro_socket:
             logging.error("socket 初始化异常")
             exit(-1)
         #处理任务列表
-        self.Data[self.SocketServerKey] = s #默认设置，为了统一处理
+        self._SetData(self.SocketServerKey,s)#默认设置，为了统一处理
         tasklist = tmpMap["tasklist"]
-        for task in tasklist:
-            self.socketExec(task)
-        return 0
+        self.taskExec(tasklist)
 
-    def socketExec(self,str):
-        # 获取规则函数名
-        tmpMap = self.GetVar(str, self.startKey, self.tab, 0)
-        funcname = tmpMap["0"]
-        if (funcname == ""):
-            logging.error("socketExec has not rule Func")
-            exit
-        endindex = tmpMap["1"]
-        # 获取规则处理对象
-        tmpstr = self.FormatData(str[endindex + 1:-len(self.endKey)])
-        # 处理
-        ret = eval("self." + funcname)(tmpstr)
+        return 0
 
     def accecpt(self,str):
         logging.debug('got connected begin')
-        ServSock = self.Data[self.SocketServerKey]
+        ServSock = self.getData(self.SocketServerKey)
         cs, addr = ServSock.accept()
         logging.debug('got connected from %s:%s'%(addr[0],addr[1]))
-        self.Data[str]=cs
+        self._SetData(str,cs)
 
     def recv(self,str):
-        cs = self.Data[str]
+        cs = self.getData(str)
         rb = cs.recv(1024)
         logging.debug('recv buf %s'% rb)
-        self.Data["RecvBuf"] =rb
+        self._SetData("RecvBuf",rb)
 
     def send(self,str):
         tmpMap = self.GetVarList(str)
@@ -55,7 +43,7 @@ class vpro_socket:
         if sockKey == "":
             logging.error('send data getSocket key failed. ', str)
             exit(-1)
-        cs = self.Data[sockKey]
+        cs = self.getData(sockKey)
         data = tmpMap[1]
         logging.debug('send buf %s' %data)
         cs.send(data.encode())
@@ -93,12 +81,7 @@ class vpro_socket:
 
         #获取任务列表
         tasklist = []
-        map = []
-        index = 0
         tmpstr = tmpMap[3]
-
-        index = self._GetTaskList_in(map, index, tasklist, tmpstr)
-        while (index != -1):
-            index = self._GetTaskList_in(map, index, tasklist, tmpstr)
+        self._GetTaskList(tasklist, tmpstr)
 
         return {"socketType":socketType,"servIp":servIp,"servPort":servPort,"tasklist":tasklist}
