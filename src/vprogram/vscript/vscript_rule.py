@@ -2,20 +2,19 @@
 import logging,socket,time,re
 from wsgiref.simple_server import make_server
 from myCommDM import *
+from vscript_dm import *
 from vpro_socket import *
 from vpro_http import *
 
 class vpro_rule(vpro_socket,vpro_http):
     def __init__(self):
-        comm_param1 = comm_param()
-        self.startKey = comm_param1.GetResult(comm_param1.useDefaultSql("getValue", "VSCRIPT_STARTKEY"))[0]["VALUE"]
-        self.endKey = comm_param1.GetResult(comm_param1.useDefaultSql("getValue", "VSCRIPT_ENDKEY"))[0]["VALUE"]
+        self.startKey = '<12 '
+        self.endKey = ' 21>'
         self.tab = ','
         self.strltab = '{'
         self.strrtab = '}'
         self.ruleMap={""}
         self.Data={}
-        self.SocketServerKey="ServerSock"
         #子类初始化
         vpro_socket.__init__(self)
         vpro_http.__init__(self)
@@ -25,7 +24,7 @@ class vpro_rule(vpro_socket,vpro_http):
         self.InitData(tmpvscript,file_context)
 
         # 加载任务
-        self._GetTaskList()
+        self._GetTaskList(self.tasklist,self.file_context)
 
         #处理任务
         self._DealTaskList()
@@ -37,12 +36,12 @@ class vpro_rule(vpro_socket,vpro_http):
         self.file_context = file_context
         self.tasklist = []
 
-    def _GetTaskList(self):
+    def _GetTaskList(self,tasklist,str):
         map = []
         index = 0
-        index = self._GetTaskList_in(map,index,self.tasklist,self.file_context)
+        index = self._GetTaskList_in(map,index,tasklist,str)
         while(index != -1):
-            index = self._GetTaskList_in(map, index,self.tasklist,self.file_context)
+            index = self._GetTaskList_in(map, index,tasklist,str)
 
 
     def _GetTaskList_in(self,map,index,tasklist,file_context):
@@ -62,26 +61,27 @@ class vpro_rule(vpro_socket,vpro_http):
                 tasklist.append(tmp)
         return tmpIndex
 
+    def _DealTaskList_in(self,str):
+        # 获取规则函数名
+        tmpMap = self.GetVar(str, self.startKey, self.tab, 0)
+        funcname = tmpMap["0"]
+        if (funcname == ""):
+            logging.error("DealTaskList has not rule Func")
+            return -1
+        endindex = tmpMap["1"]
+        # 获取规则处理对象
+        tmpstr = str[endindex + 1:-len(self.endKey)]
+        tmpstr = self.FormatData(tmpstr,False) #格式化一下
+        # 处理
+        ret = eval("self." + funcname)(tmpstr)
+
+        return ret
+
     def _DealTaskList(self):
         i = 1
         for task in self.tasklist:
             logging.debug("执行任务 task[%d]" % i)
-            # 获取规则函数名
-            tmpMap = self.GetVar(task, self.startKey, self.tab, 0)
-            funcname = tmpMap["0"]
-            if (funcname == ""):
-                logging.error("DealTaskList has not rule Func")
-                continue
-            endindex = tmpMap["1"]
-            # 获取规则处理对象
-            tmpstr = task[endindex+1:-len(self.endKey)]
-            # 处理
-            ret = eval("self." + funcname)(tmpstr)
-
-            if (ret != 0):
-                logging.error("DealTaskList rule Func Dealing Failed")
-                return
-
+            self._DealTaskList_in(task)
 
     def GetVar(self,str,startKey,endKey,index):
         if startKey == "" and endKey == "":
@@ -102,26 +102,63 @@ class vpro_rule(vpro_socket,vpro_http):
             return {"0": "", "1": -1}
 
         if tmpEnd != -1:
-            tmp = self.FormatData(str[tmpStart + len(startKey):tmpEnd])
+            tmp = self.FormatData(str[tmpStart + len(startKey):tmpEnd],False)
         else:
-            tmp = self.FormatData(str[tmpStart + len(startKey):])
+            tmp = self.FormatData(str[tmpStart + len(startKey):],False)
         return {"0":tmp,"1":tmpEnd}
 
-    def FormatData(self,str):
+    def FormatData_in(self,str,map,index):
+        retval = str
+        tmpStart =0
+        tmpindex = index
+        while tmpStart != -1:
+            tmpStart = retval.find(self.startKey, tmpindex)
+            tmpEnd = retval.find(self.endKey, tmpindex)
+            if tmpStart != -1 and tmpStart < tmpEnd:
+                map.append(tmpStart)
+                #递归，因为待处理的字符串被替换，所以重新计算
+                retval = self.FormatData_in(retval,map,tmpStart+len(self.startKey))
+                tmpindex = index
+
+            elif tmpEnd != -1 and \
+                 (tmpEnd < tmpStart or tmpStart == -1):
+                tmpStart = map.pop()
+                tmpEnd = tmpEnd+len(self.endKey)
+                tmp = self._DealTaskList_in(retval[tmpStart:tmpEnd])
+                tmp1 = retval[tmpEnd]
+                if retval[tmpStart-1] == self.strltab and \
+                    retval[tmpEnd] == self.strrtab:
+                    retval = retval[0:tmpStart-1] + tmp + retval[tmpEnd+1:]
+                else:
+                    retval = retval[0:tmpStart] + tmp + retval[tmpEnd:]
+                tmpindex = tmpStart +len(tmp)
+
+        #else:
+            #pass
+        return retval
+
+    def FormatData(self,str,do_func = True):
         retVal = str.strip()
         if retVal[0] == self.strltab and retVal[-1] == self.strrtab:#如果有字符串符，就去掉
             retVal= retVal[1:-1].strip()
+            #如果有 startKey 或者 endKey则继续执行
+        if do_func:
+            map = []
+            index = 0
+            retVal = self.FormatData_in(retVal,map,index)
         return retVal
 
     def GetVarList(self,str):
         RetMap = []
         tmpMap = self.GetVar(str, "", self.tab, 0)
+        oldIndex = 0
         tmpMap["1"] != -1
         while tmpMap["1"] != -1:
+            oldIndex = tmpMap["1"]
             RetMap.append(tmpMap["0"])
             tmpMap = self.GetVar(str, self.tab, self.tab, tmpMap["1"])
         if tmpMap["1"] == -1:
-            tmpMap["1"] = 0
+            tmpMap["1"] = oldIndex
         tmpMap = self.GetVar(str, self.tab, "", tmpMap["1"])
         if tmpMap["0"] != "":
             RetMap.append(tmpMap["0"])
@@ -144,4 +181,50 @@ class vpro_rule(vpro_socket,vpro_http):
         return i > 0
 
     def getData(self,str):
-        self.Data[str]
+        str = str.replace("\r","")
+        str = str.replace("\n", "")
+        if str.find("sqlStr_") == 0 or \
+                str.find("sqlVau_") == 0:
+            comm_param1 = comm_param()
+            vscript_list1 = vscript_list()
+            return comm_param1.GetResult(vscript_list1.useDefaultSql("getData", str[7:]))[0]["VALUE"]
+        else:
+            return self.Data[str]
+
+    def setData(self,str):
+        tmpMap = self.GetVarList(str)
+        if len(tmpMap) < 2:
+            logging.error("SetData 非合格输入[%s]" % (str))
+            return False
+        key = tmpMap[0]
+        value = tmpMap[1]
+        return self._SetData(key,value)
+
+    def _SetData(self,key,value):
+        if key.find("sqlStr_") == 0 or \
+                key.find("sqlVau_") == 0:
+            #插入数据库
+            if key.find("sqlVau_") == 0:
+                value = "'"+value+"'"
+            vscript_list1 = vscript_list()
+            vscript_list1.useDefaultSql("setData",key[7:],value)
+            comm_param1 = comm_param()
+            comm_param1.commit()
+        else:
+            #插入变量名
+            self.Data[key] = value
+        return True
+
+    def taskExec(self,tasklist,do_func = True):
+        for str in tasklist:
+            # 获取规则函数名
+            tmpMap = self.GetVar(str, self.startKey, self.tab, 0)
+            funcname = tmpMap["0"]
+            if (funcname == ""):
+                logging.error("taskExec has not rule Func")
+                exit
+            endindex = tmpMap["1"]
+            # 获取规则处理对象
+            tmpstr = self.FormatData(str[endindex + 1:-len(self.endKey)],do_func)
+            # 处理
+            ret = eval("self." + funcname)(tmpstr)
