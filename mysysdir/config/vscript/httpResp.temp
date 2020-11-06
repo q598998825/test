@@ -1,0 +1,100 @@
+<12 http,    0.0.0.0,   10094, {
+
+<12 setData,    sqlStr_sysdate,    {select strftime('%Y%m%d%H%M%S', 'now', '+8 hour')}  21>
+<12 setData,    sqlVau_eccode,    2002000191595  21>
+<12 setData,    sqlVau_ProductOfferingID,    20200806170701  21>
+<12 setData,    sqlVau_ProductID,    2020080617070101  21>
+
+<12 setData,    sqlVau_POSpecNumber,    010190003  21>
+<12 setData,    sqlVau_ProductSpecNumber,    99904  21>
+
+发送销户报文
+除了自动替换的时间
+因为是销户，所以还得根据情况 替换
+CustomerProvinceNumber 集团eccode
+ProductCode      bboss映射表的bboss产品配置
+
+<12 post,       http://100.101.96.190/esopiboss/Portal4Center,
+            {   {"Content-Type":"multipart/form-data; boundary=---------------------------7e35e28460a7e"}},
+{-----------------------------7e35e28460a7e
+Content-Disposition: form-data; name="xmlhead"
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<InterBOSS>
+<Version>0100</Version>
+<TestFlag>0</TestFlag>
+<BIPType>
+<BIPCode>BIP4B255</BIPCode>
+<ActivityCode>T4011004</ActivityCode>
+<ActionCode>0</ActionCode>
+</BIPType>
+<RoutingInfo>
+<OrigDomain>BBSS</OrigDomain>
+<RouteType>00</RouteType>
+<Routing>
+<HomeDomain>BOSS</HomeDomain>
+<RouteValue>200</RouteValue>
+</Routing>
+</RoutingInfo>
+<TransInfo>
+<SessionID>BBSS1546506848151</SessionID>
+<TransIDO>BBSST40110<12 getData,sqlVau_sysdate 21>1944</TransIDO>
+<TransIDOTime><12 getData,sqlVau_sysdate 21></TransIDOTime>
+</TransInfo>
+<SNReserve>
+<TransIDC>99801117<12 getData,sqlVau_sysdate 21>221889323</TransIDC>
+<ConvID>e7ec003e-7d38-4898-95f0-64c3af4f2a5c</ConvID>
+<CutOffDay>20190103</CutOffDay>
+<OSNTime>20190103171508</OSNTime>
+<OSNDUNS>9980</OSNDUNS>
+<HSNDUNS>2000</HSNDUNS>
+<MsgSender>0019</MsgSender>
+<MsgReceiver>20ES</MsgReceiver>
+<Priority>3</Priority>
+<ServiceLevel>1</ServiceLevel>
+</SNReserve>
+</InterBOSS>
+
+-----------------------------7e35e28460a7e
+Content-Disposition: form-data; name="xmlbody"
+
+<?xml version="1.0" encoding="UTF-8"?>
+<InterBOSS>
+    <SvcCont>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+        <OrderInfoReq>
+            <OrderSourceID>2</OrderSourceID>
+            <CustomerNumber><12 getData,sqlVau_eccode 21></CustomerNumber>
+            <OrderInfo>
+                <POOrderNumber><12 getData,sqlVau_sysdate 21>01</POOrderNumber>
+                <POSpecNumber><12 getData,sqlVau_POSpecNumber 21></POSpecNumber>
+                <ProductOfferingID><12 getData,sqlVau_ProductOfferingID 21></ProductOfferingID>
+                <HostCompany>200</HostCompany>
+                <POOrderBusinesses>
+                    <OperationSubTypeID>2</OperationSubTypeID>
+                </POOrderBusinesses>
+                <BusinessMode>5</BusinessMode>
+                <ProductOrders>
+                    <ProductOrderInfo>
+                        <ProductOrder>
+                            <ProductOrderNumber><12 getData,sqlVau_sysdate 21>02</ProductOrderNumber>
+                            <ProductID><12 getData,sqlVau_ProductID 21></ProductID>
+                            <ProductSpecNumber><12 getData,sqlVau_ProductSpecNumber 21></ProductSpecNumber>
+                        </ProductOrder>
+                        <ProductOrderBusinesses>
+                            <OperationSubTypeID>2</OperationSubTypeID>
+                        </ProductOrderBusinesses>
+                    </ProductOrderInfo>
+                </ProductOrders>
+            </OrderInfo>
+        </OrderInfoReq>]]>
+    </SvcCont>
+</InterBOSS>
+
+-----------------------------7e35e28460a7e-- }
+
+ 21>
+
+ }
+ 21>
