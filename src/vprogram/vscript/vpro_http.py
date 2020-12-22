@@ -10,36 +10,21 @@ class vpro_http:
         self.HttpServerKey = "HttpServer"
         pass
 
-    def http(self,str):
+    def http(self,toml_data):
         # 获取参数
-        tmpMap = self.httpGetVar(str)
-
-        self.httpInit(tmpMap[0],tmpMap[1])
-
-        # 获取任务列表
-        tasklist = []
-        tmpstr = tmpMap[2]
-        self._GetTaskList(tasklist, tmpstr)
-
-        #处理程序
-        self.taskExec(tasklist)
-
-        return 0
-
-
-    def httpGetVar(self,str):
-        tmpMap = self.GetVarList(str)
-        ip = tmpMap[0]
+        ip = toml_data["servIp"]
         if ip == "":
             logging.error("http 无法获取服务ip")
             exit(-1)
 
-        port = tmpMap[1]
+        port = toml_data["servPort"]
         if port == "":
             logging.error("http 无法获取 port")
             exit(-1)
 
-        return tmpMap
+        self.httpInit(ip,port)
+
+        return 0
 
     def httpInit(self,ip,port):
         data = {"ip":ip,"port":port}
@@ -65,15 +50,14 @@ class vpro_http:
             ) from exc
         execute_from_command_line(argv)
 
-    def post(self,str):
+    def post(self,config,key,value):
         logging.debug("post func begin")
-        tmpMap = self.GetVarList(str)
-        if len(tmpMap) <3:
-            logging.error("post 入参不正常")
-            return
-        url = tmpMap[0]
-        httpHead = tmpMap[1]
-        httpBody = tmpMap[2]
+        tasklist = []
+        value=self._taskExec(value,tasklist)
+
+        url = config["url"]
+        httpHead = config["heads"]
+        httpBody = value
         logging.debug("post %s \r\n%s\r\n\r\n%s"%(url,httpHead,httpBody))
         #获取报文头
         if httpHead != "":
