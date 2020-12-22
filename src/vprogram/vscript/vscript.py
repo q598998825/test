@@ -1,5 +1,5 @@
 # coding=utf-8
-import logging,os,traceback,copy
+import logging,os,traceback,copy,toml
 
 from vscript_rule import *
 from vscript_dm import *
@@ -30,12 +30,11 @@ class vscript:
         tmpPath = self.vscriptPath + "/" + tmpvscript["FILENAME"]
         tmpPath = os.path.abspath(tmpPath)
 
-        file = open(tmpPath, 'r', encoding='utf-8')
+        tomldata = toml.load(tmpPath)
         try:
-            file_context = file.read()  # 读取文件
-            vpro_rule1.exec(tmpvscript, file_context)
+            #file_context = file.read()  # 读取文件
+            vpro_rule1.exec(tmpvscript, tomldata)
         except Exception as e:
             logging.error("vscript 执行任务异常 [%s]：%s \n%s" % (tmpvscript["NAME"], e.__str__(), traceback.format_exc()))
         finally:
-            file.close()
             lThreadPool.mydatabase1.commit()
