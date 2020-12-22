@@ -19,69 +19,95 @@ class vpro_rule(vpro_socket,vpro_http):
         vpro_socket.__init__(self)
         vpro_http.__init__(self)
 
-    def exec(self,tmpvscript,file_context):
+    def exec(self,tmpvscript,toml_data):
         #初始化数据
-        self.InitData(tmpvscript,file_context)
-
-        # 加载任务
-        self._GetTaskList(self.tasklist,self.file_context)
-
+        self.InitData(tmpvscript,toml_data)
+        
         #处理任务
-        self._DealTaskList()
+        self._DealTaskList(self.toml_data)
 
     # ********************************************** 下面为标准一般不动的函数 ******************************
 
-    def InitData(self,tmpvscript,file_context):
+    def _InitConfig(self,toml_data):
+        if "config" not in toml_data:
+            return
+        config = toml_data["config"]
+        ret = None
+        if "needServ" in config and config["needServ"] :
+            ret = eval("self." + config["type"])(toml_data["config"])
+        return ret
+
+    def InitData(self,tmpvscript,toml_data):
         self.vscript = tmpvscript
-        self.file_context = file_context
-        self.tasklist = []
+        self.toml_data = toml_data
+        self.tasklist = {}
 
-    def _GetTaskList(self,tasklist,str):
-        map = []
+    def _taskExec(self,str,tasklist=[]):
         index = 0
-        index = self._GetTaskList_in(map,index,tasklist,str)
-        while(index != -1):
-            index = self._GetTaskList_in(map, index,tasklist,str)
+        tmpArray = []
+        tasklist1=[]
+        while index != -1:
+            index = self._GetTaskList_in(str,tasklist1,tmpArray,index)
+
+        #格式化
+        for tmpTask in tasklist1:
+            tmpMap = self.GetVar(tmpTask, self.startKey, self.tab, 0)
+            funcname = tmpMap["0"]
+            if (funcname == ""):
+                logging.error("taskExec has not rule Func")
+                exit
+            endindex = tmpMap["1"]
+            # 获取规则处理对象
+            tmpstr = self.FormatData(tmpTask[endindex + 1:-len(self.endKey)])
+            # 处理
+            ret = eval("self." + funcname)(tmpstr)
+            str = str.replace(tmpTask,ret)
+        return str
 
 
-    def _GetTaskList_in(self,map,index,tasklist,file_context):
+    def _GetTaskList_in(self,str,tasklist=[],tmpArray=[],index=0):
+        startIndex = str.find(self.startKey,index)
+        endIndex = str.find(self.endKey,index)
+        if startIndex != -1 and \
+            startIndex < endIndex:
+            #当先找到开始key,且开始key比结束key还前则加进去
+            tmpArray.append(startIndex)
+            ret=self._GetTaskList_in(str,tasklist,tmpArray,startIndex+1)
+            return ret
+        elif endIndex != -1 and \
+                (endIndex < startIndex or startIndex == -1):
+            #当找到结束符就用结束符的内容
+            tmp = tmpArray.pop()
+            tmpStr = str[tmp:endIndex+len(self.endKey)]
+            tasklist.append(tmpStr)
+            return endIndex+len(self.endKey)
+        return -1
 
-        tmpIndex = file_context.find(self.startKey, index)
-        tmpEnd = file_context.find(self.endKey, index)
 
-        if (tmpIndex != -1 and
-                tmpIndex < tmpEnd):
-            map.append(tmpIndex)
-            return self._GetTaskList_in(map, tmpIndex + len(self.startKey),tasklist,file_context)
-        elif (tmpEnd != -1):
-            tmpStart = map.pop()
-            tmpIndex = tmpEnd + len(self.endKey)
-            if len(map) == 0:#只有最外层作为任务处理
-                tmp = file_context[tmpStart:tmpIndex]
-                tasklist.append(tmp)
-        return tmpIndex
-
-    def _DealTaskList_in(self,str):
+    def _DealTaskList_in(self,toml_data):
         # 获取规则函数名
-        tmpMap = self.GetVar(str, self.startKey, self.tab, 0)
-        funcname = tmpMap["0"]
-        if (funcname == ""):
-            logging.error("DealTaskList has not rule Func")
-            return -1
-        endindex = tmpMap["1"]
+        ret = 0
+        if "config" not in toml_data:
+            logging.error("_DealTaskList_in 没有 config")
+            return
+        config = toml_data["config"]
+        funcname = config["type"]
         # 获取规则处理对象
-        tmpstr = str[endindex + 1:-len(self.endKey)]
-        tmpstr = self.FormatData(tmpstr,False) #格式化一下
-        # 处理
-        ret = eval("self." + funcname)(tmpstr)
+        for task in toml_data:
+            if task == "config":
+                continue
+            ret = eval("self." + funcname)(config,task,toml_data[task])
 
         return ret
 
-    def _DealTaskList(self):
-        i = 1
-        for task in self.tasklist:
-            logging.debug("执行任务 task[%d]" % i)
-            self._DealTaskList_in(task)
+    def _DealTaskList(self,toml_data):
+
+        self._InitConfig(toml_data)
+
+        for task in toml_data:
+            logging.debug("执行任务 task[%s]" % task)
+            if task.find("func") != -1:
+                self._DealTaskList_in(toml_data[task])
 
     def GetVar(self,str,startKey,endKey,index):
         if startKey == "" and endKey == "":
@@ -191,23 +217,17 @@ class vpro_rule(vpro_socket,vpro_http):
         else:
             return self.Data[str]
 
-    def setData(self,str):
-        tmpMap = self.GetVarList(str)
-        if len(tmpMap) < 2:
-            logging.error("SetData 非合格输入[%s]" % (str))
-            return False
-        key = tmpMap[0]
-        value = tmpMap[1]
-        return self._SetData(key,value)
+    def setData(self,config,taskid,taskvalue):
+        return self._SetData(config,taskid,taskvalue)
 
-    def _SetData(self,key,value):
-        if key.find("sqlStr_") == 0 or \
-                key.find("sqlVau_") == 0:
+    def _SetData(self,config,key,value):
+        if "substype" in config\
+                and -1 != config["substype"].find("sql"):
             #插入数据库
-            if key.find("sqlVau_") == 0:
+            if config["substype"]== "sqlVau":
                 value = "'"+value+"'"
             vscript_list1 = vscript_list()
-            vscript_list1.useDefaultSql("setData",key[7:],value)
+            vscript_list1.useDefaultSql("setData",key,value)
             comm_param1 = comm_param()
             comm_param1.commit()
         else:
