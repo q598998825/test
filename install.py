@@ -6,7 +6,8 @@ from wsgiref.simple_server import make_server
 '''
 install_array = {"jieba":["pip install jieba"],
                  "django":["pip install django"],
-                 "requests":["pip install requests"]}
+                 "requests":["pip install requests"],
+                 "toml":["pip install toml"]}
 
 '''
 test123
